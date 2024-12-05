@@ -6,7 +6,16 @@ const wordLength = 5;
 
 console.log('Speedwordle script loaded at:', Date.now());
 
-const socket = new WebSocket('ws://localhost:3000');  // Replace with your server's WebSocket URL
+
+let socket;
+if (window.location.protocol === "https:") {
+    // In production with HTTPS
+    socket = new WebSocket('wss://demos.unicity-labs.com');
+} else {
+    // In development with HTTP
+    socket = new WebSocket('ws://localhost:3000');
+}
+
 
 // WebSocket event listeners
 socket.addEventListener('open', () => {

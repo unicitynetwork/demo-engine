@@ -7,7 +7,14 @@ let selectedCompetitor = 'beginner'
 
 console.log('PlayervModel script loaded at:', Date.now());
 
-const socket = new WebSocket('ws://localhost:3000');  
+let socket;
+if (window.location.protocol === "https:") {
+    // In production with HTTPS
+    socket = new WebSocket('wss://demos.unicity-labs.com');
+} else {
+    // In development with HTTP
+    socket = new WebSocket('ws://localhost:3000');
+}  
 
 // WebSocket event listeners
 socket.addEventListener('open', () => {
