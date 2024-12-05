@@ -1,0 +1,172 @@
+/* Game Layout */
+.game-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.board-section {
+    text-align: center;
+}
+
+/* Letter Boxes */
+.letter-box {
+    width: 60px;
+    height: 60px;
+    border: 2px solid gray;
+    margin: 2px;
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+.filled-box {
+    border: 2px solid black;
+}
+
+/* Game State Colors */
+.correct {
+    background-color: #6AAA64;
+    color: white;
+    border-color: #6AAA64;
+}
+
+.present {
+    background-color: #C9B458;
+    color: white;
+    border-color: #C9B458;
+}
+
+.absent {
+    background-color: #787C7E;
+    color: white;
+    border-color: #787C7E;
+}
+
+/* Keyboard Styles */
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    margin: 3px;
+}
+
+.key-box {
+    min-width: 32px;
+    height: 45px;
+    margin: 1px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.1s ease;
+}
+
+.key-box:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.key-box[data-key="ENTER"],
+.key-box[data-key="BACK"] {
+    min-width: 50px;
+    font-size: 0.8rem;
+}
+
+/* Special key states */
+.key-box.correct {
+    background-color: #6AAA64;
+    border-color: #6AAA64;
+    color: white;
+}
+
+.key-box.present {
+    background-color: #C9B458;
+    border-color: #C9B458;
+    color: white;
+}
+
+.key-box.absent {
+    background-color: #787C7E;
+    border-color: #787C7E;
+    color: white;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+    color: #212529;
+}
+
+.modal-body {
+    padding: 2rem;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #212529;
+    background-color: white;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 1rem;
+    background-color: white;
+}
+
+.modal-title {
+    color: #212529;
+    font-weight: bold;
+}
+
+.green-check {
+    color: green;
+    font-weight: bold;
+}
+.red-cross {
+    color: red;
+    font-weight: bold;
+}
+#timer {
+    font-size: 3rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#timer.warning {
+    color: #f0ad4e;
+}
+
+#timer.danger {
+    color: #d9534f;
+    animation: pulse 1s infinite;
+}
+
+
+
+/* Animations */
+@keyframes shake {
+    0% { transform: translateX(0) }
+    25% { transform: translateX(5px) }
+    50% { transform: translateX(-5px) }
+    75% { transform: translateX(5px) }
+    100% { transform: translateX(0) }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+

@@ -1,0 +1,89 @@
+extends layout
+
+block content
+	div.container.mt-5
+		h1.text-center.mb-4
+
+		div.game-container
+			div.row
+				// Controls column - left side on large screens, top on mobile
+				div.col-12.col-lg-3.mb-4.mb-lg-0
+					div.controls-section.text-center
+						div.wallet-section.mb-4
+							button#connectWallet.btn.btn-outline-primary.mb-2 Connect Wallet
+							div#walletBalance.d-none
+								strong.me-2 Balance:
+								span.balance-amount
+								span.ms-2.badge.bg-secondary ALPHA
+						form#competitor-selection.mb-4
+							div.form-group
+								label.h4.mb-3(for="competitor") Choose Your Competitor:
+								select#competitor.form-select.form-select-lg.mb-3(name="competitor", style="width: 300px; margin: 0 auto;")
+									option(value="beginner") Beginner: Minimax
+									option(value="intermediate") Intermediate: Constraints
+									option(value="advanced") Advanced: GPT
+							div.d-flex.justify-content-center.gap-2
+								button#startButton.btn.btn-primary.btn-lg Start Game
+								button#resetButton.btn.btn-primary.btn-lg.ms-2.d-none Play Again
+
+				// Game boards column - right side on large screens, below on mobile
+				div.col-12.col-lg-9
+					div.row
+						// Player's board
+						div.col-12.col-md-6.mb-4
+							div.board-section
+								h2 You
+								div.d-flex.justify-content-center.mb-4#game-board
+									div.d-flex.flex-column
+										- for(let i = 0; i < 6; i++)
+											div.d-flex
+												- for(let j = 0; j < 5; j++)
+													div.letter-box
+
+								div#keyboard.container.mt-3
+									div.row.justify-content-center.g-1.mb-1
+										- const row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
+										each letter in row1
+											div.col-auto
+												button.btn.btn-light.key-box(data-key=letter)= letter
+
+									div.row.justify-content-center.g-1.mb-1
+										- const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
+										each letter in row2
+											div.col-auto
+												button.btn.btn-light.key-box(data-key=letter)= letter
+
+									div.row.justify-content-center.g-1
+										div.col-auto
+											button.btn.btn-light.key-box(data-key="ENTER") Enter
+										- const row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+										each letter in row3
+											div.col-auto
+												button.btn.btn-light.key-box(data-key=letter)= letter
+										div.col-auto
+											button.btn.btn-light.key-box(data-key="BACK")
+												i.bi.bi-backspace-fill
+
+						// AI's board
+						div.col-12.col-md-6.mb-4
+							div.board-section
+								h2 Agent
+								div.d-flex.justify-content-center.mb-4#ai-board
+									div.d-flex.flex-column
+										- for(let i = 0; i < 6; i++)
+											div.d-flex
+												- for(let j = 0; j < 5; j++)
+													div.letter-box
+
+	div#messageModal.modal.fade(tabindex='-1' role='dialog' aria-hidden='true')
+		div.modal-dialog.modal-dialog-centered(role='document')
+			div.modal-content
+				div.modal-header
+					h5#messageModalTitle.modal-title Game Over
+					button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+				div#messageModalBody.modal-body
+					p
+				div.modal-footer
+					button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+
+	script(src="/js/playervmodel-sock.js")

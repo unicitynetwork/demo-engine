@@ -1,0 +1,60 @@
+//- views/includes/shared-mixins.pug
+
+mixin themeCss
+    
+    //- Font loading for Bootstrap Icons
+    style.
+        @font-face {
+            font-family: "bootstrap-icons";
+            src: url("!{assetUrl("./font/bootstrap-icons.woff2")}") format("woff2"),
+                 url("!{assetUrl("./font/bootstrap-icons.woff")}") format("woff");
+        }
+
+    //- Bootstrap Icons stylesheet
+    link(rel="stylesheet", href=assetUrl(`./style/bootstrap-icons.css`), integrity=assetIntegrity("bootstrap-icons.css"), crossorigin="anonymous")
+
+
+//- Dismissable Info Alert Mixin
+//- This mixin creates a Bootstrap alert that users can dismiss, with their preference saved
+//- Parameters:
+//-   settingKey: The key used to remember if user dismissed this alert
+//-   collapsedText: Text to show when the alert is collapsed
+mixin dismissableInfoAlert(settingKey, collapsedText)
+    //- Check if this specific alert has been dismissed by the user
+    if (!userSettings[settingKey])
+        //- Show the full alert if not dismissed
+        .alert.alert-primary.alert-dismissible.shadow-sm.mb-4.ps-3.ps-md-7(role="alert")
+            //- Info icon for larger screens
+            i.d-none.d-md-inline.bi-info-circle.fs-5.d-inline-block(
+                style="position: absolute; top: 0; left: 0; width: 36px; margin-left: 0.75rem; margin-top: 1.0rem;"
+            )
+
+            //- Content passed to the mixin goes here
+            block
+
+            //- Dismiss button that saves the preference
+            a.btn-close(
+                href=`/settings/dismiss?key=${settingKey}`,
+                aria-label="Close",
+                style="text-decoration: none;",
+                title="Hide this note",
+                data-bs-toggle="tooltip"
+            )
+
+    else if (collapsedText)
+        //- Show collapsed version if specified and alert was dismissed
+        .alert.alert-primary.shadow-sm.mb-4(role="alert")
+            .d-flex.justify-content-between.align-items-center
+                .d-flex.align-items-center
+                    i.bi-info-circle.me-3
+                    span #{collapsedText}
+                
+                //- Expand button
+                a.text-muted(
+                    href=`/settings/restore?key=${settingKey}`,
+                    aria-label="Show",
+                    style="text-decoration: none;",
+                    title="Show this note",
+                    data-bs-toggle="tooltip"
+                )
+                    i.bi-plus-square

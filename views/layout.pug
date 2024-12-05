@@ -1,0 +1,72 @@
+
+include includes/shared-mixins
+inclu
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+
+        //- Add after our existing meta tags in the head section
+        //- Replace example.com with our actual domain once deployed
+        link(rel="canonical" href="https://example.com/speed-wordle")
+
+        //- Basic favicon for most browsers
+        link(rel="icon", type="image/x-icon", href=assetUrl("./favicon/favicon.ico"))
+
+        //- Social media sharing
+        meta(property="og:title" content="Unicity Demos ")
+        meta(property="og:description" content="Demos highlight the Uncity Agent Plaform")
+
+        //- Mobile web app support
+        meta(name="apple-mobile-web-app-title" content="Uncity Demos")
+        meta(name="application-name" content="Unicity Demos")
+
+        //- Theme colors 
+        meta(name="msapplication-TileColor" content="#022e70")
+        meta(name="theme-color" content="#022e70")
+
+        title Unicity Demos
+
+        link(rel="stylesheet", href="/css/bootstrap-icons.css")
+        //- Dark theme (using the newer version)
+        link(rel="stylesheet", href="/css/dark.min.css")
+        //- Our game-specific styles
+        link(rel="stylesheet", href="/css/demos.css")
+
+    
+    body.bg-dark.text-light
+        nav.navbar.navbar-expand-md.navbar-dark.bg-header-footer
+            .container
+                a.navbar-brand(href="/")
+                    span
+                        img.header-image(src=assetUrl("./img/logo.svg"), alt="logo", style="width: 80px; height: 80px;")
+                        span.fw-light Unicity Agent Demo
+        
+        div.pb-4.pt-3.pt-md-4.bg-main
+            div.container.px-2.px-sm-3
+                block content
+
+
+    footer.footer.border-top.border-primary.bg-header-footer.pt-3.pb-1.px-3.text-white(style="border-width: 5px !important;")
+        .container
+            .row.mt-4.mb-6
+                .col-lg-3
+                    .mb-4
+                        h6 Project 
+                        .ms-2
+                            a.footer-link(href="https://github.com/unicitynetwork") github.com/unicitynetwork/
+                .col-lg-3
+                .col-lg-3
+                .col-lg-3
+                    .mb-4
+                        h6 Contact unicity-devs@proton.me
+
+    script(src="/js/bootstrap.bundle.min.js")  
+    style.
+        @font-face {
+        font-family: "bootstrap-icons";
+        src: url("!{assetUrl("./font/bootstrap-icons.woff2")}") format("woff2"),
+            url("!{assetUrl("./font/bootstrap-icons.woff")}") format("woff");
+        }
+    
