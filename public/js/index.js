@@ -3,8 +3,8 @@ let selectedGame = null
 
 
 // DOM Elements
-
-const startButton = document.getElementById('startGame')
+/*
+//const startButton = document.getElementById('startGame')
 const gameModes = ['CombatWordle', 'playerVsAgent', 'agentVsAgent']
 
 // Set up game mode selection
@@ -36,6 +36,8 @@ function validateForm() {
 }
 
 // Handle game start
+
+
 startButton.addEventListener('click', () => {
     if (!selectedGame) return
 
@@ -52,3 +54,5 @@ startButton.addEventListener('click', () => {
             break
     }
 })
+
+*/

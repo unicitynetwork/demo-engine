@@ -17,13 +17,13 @@ block content
 								span.ms-2.badge.bg-secondary ALPHA
 						form#competitor-selection.mb-4
 							div.form-group
-								label.h4.mb-3(for="competitor") Choose Your Competitor:
-								select#competitor.form-select.form-select-lg.mb-3(name="competitor", style="width: 300px; margin: 0 auto;")
-									option(value="beginner") Beginner: Minimax
-									option(value="intermediate") Intermediate: Constraints
-									option(value="advanced") Advanced: GPT
+								label.h6.mb-2(for="competitor") Choose  Competitor:
+								select#competitor.form-select.form-select-sm.mb-3(name="competitor", style="width: 150px; margin: 0 auto;")
+									option(value="beginner")  Minimax (easy)
+									option(value="intermediate") Constraints
+									option(value="advanced") GPT (hard)
 							div.d-flex.justify-content-center.gap-2
-								button#startButton.btn.btn-primary.btn-lg Start Game
+								button#startButton.btn.btn-primary.btn-lg(style="width: 150px") Start Game
 								button#resetButton.btn.btn-primary.btn-lg.ms-2.d-none Play Again
 
 				// Game boards column - right side on large screens, below on mobile
@@ -85,5 +85,6 @@ block content
 					p
 				div.modal-footer
 					button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
-
-	script(src="/js/playervmodel-sock.js")
+	
+    script(src="/js/websocket-manager.js")
+    script(src="/js/playervmodel-sock.js")

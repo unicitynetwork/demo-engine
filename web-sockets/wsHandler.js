@@ -10,6 +10,28 @@ function initializeWebSockets(server, sessionMiddleware) {
 
     wss.on('connection', function connection(ws, req) {
 
+        // Set up ping interval
+        const pingInterval = setInterval(() => {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.ping();
+                // Set a timeout to check if we get a pong back
+                const timeout = setTimeout(() => {
+                    ws.terminate();
+                }, 30000); // 30 seconds timeout
+
+                // Store the timeout in the ws object so we can clear it
+                ws._pingTimeout = timeout;
+            }
+        }, 25000); // Ping every 25 seconds
+
+        // Handle pong responses
+        ws.on('pong', () => {
+            // Clear the timeout when we get a pong back
+            if (ws._pingTimeout) {
+                clearTimeout(ws._pingTimeout);
+            }
+        });
+
         // Use sessionMiddleware to parse session before accessing it
         sessionMiddleware(req, {}, () => {
             if (!req.session || !req.session.id) {
@@ -66,13 +88,17 @@ function initializeWebSockets(server, sessionMiddleware) {
                 }
             });
             ws.on('close', () => {
+                // Clean up ping interval when connection closes
+                clearInterval(pingInterval);
+                if (ws._pingTimeout) {
+                    clearTimeout(ws._pingTimeout);
+                }
                 if (activeServer) {
                     activeServer.removeConnection(sessionId);
                 }
             });
         });
     });
-
     return wss;
 }
 

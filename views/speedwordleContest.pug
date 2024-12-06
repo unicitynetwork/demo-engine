@@ -63,7 +63,7 @@ block content
                             div.card-header.bg-primary.text-white
                                 h3.mb-0 Contest Scores
                             div.card-body
-                                table.table.table-hover
+                                table.table
                                     thead
                                         tr
                                             th #
@@ -91,7 +91,7 @@ block content
                             div.card-header.bg-primary.text-white
                                 h3.mb-0 Leaderboard
                             div.card-body
-                                table.table.table-hover
+                                table.table
                                     thead
                                         tr
                                             th Rank
@@ -112,4 +112,5 @@ block content
                     button#modalSubmitBtn.btn.btn-primary.d-none(type='button' onclick='submitPlayerName()') Submit Score
                     button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
 
+    script(src="/js/websocket-manager.js")
     script(src="/js/speedwordlecontest-sock.js")

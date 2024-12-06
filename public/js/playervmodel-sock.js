@@ -1,3 +1,5 @@
+
+
 let gameStarted = false;
 let currentTile = 0;
 let currentRow = 0;
@@ -7,27 +9,8 @@ let selectedCompetitor = 'beginner'
 
 console.log('PlayervModel script loaded at:', Date.now());
 
-let socket;
-if (window.location.protocol === "https:") {
-    // In production with HTTPS
-    socket = new WebSocket('wss://demos.unicity-labs.com');
-} else {
-    // In development with HTTP
-    socket = new WebSocket('ws://localhost:3000');
-}  
-
-// WebSocket event listeners
-socket.addEventListener('open', () => {
-    console.log('Connected to WebSocket server');
-});
-
-socket.addEventListener('error', () => {
-    showMessage('Error', 'Connection to the server lost. Please refresh the page.');
-});
-
-socket.addEventListener('close', () => {
-    showMessage('Error', 'Connection closed. Please try again later.');
-});
+const wsManager = new WebSocketManager();
+const socket = wsManager.connect();
 
 
 

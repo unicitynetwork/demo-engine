@@ -7,6 +7,14 @@
     margin: 0 auto;
 }
 
+.game-desc {
+    color: #6c757d;  /* Same as Bootstrap's text-muted */
+}
+
+.list-group-item-action:hover .game-desc {
+    color: #495057 !important;  /* Same as Bootstrap's text-body */
+}
+
 .board-section {
     text-align: center;
 }
