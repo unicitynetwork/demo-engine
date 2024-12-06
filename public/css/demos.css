@@ -60,13 +60,13 @@
 .keyboard-row {
     display: flex;
     justify-content: center;
-    gap: 3px;
-    margin: 3px;
+    gap: 2px;
+    margin: 2px;
 }
 
 .key-box {
-    min-width: 32px;
-    height: 45px;
+    min-width: 28px;
+    height: 40px;
     margin: 1px;
     border-radius: 4px;
     font-weight: bold;
@@ -75,6 +75,7 @@
     justify-content: center;
     align-items: center;
     transition: all 0.1s ease;
+    font-size: 0.9rem;
 }
 
 .key-box:hover {
@@ -84,7 +85,7 @@
 
 .key-box[data-key="ENTER"],
 .key-box[data-key="BACK"] {
-    min-width: 50px;
+    min-width: 45px;
     font-size: 0.8rem;
 }
 
@@ -163,6 +164,12 @@
     animation: pulse 1s infinite;
 }
 
+/* Hide the keyboard on larger screens */
+@media (min-width: 992px) {
+    #keyboard {
+        display: none;
+    }
+}
 
 
 /* Animations */

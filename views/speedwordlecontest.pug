@@ -1,116 +1,130 @@
 extends layout
 
 block content
-    div.container.mt-5
-        h1.text-center.mb-4  Combat Wordle
-        +dismissableInfoAlert("speedWorldeRulesDismissed", "Rules of the Game...")
-            h6.mb-2 Rules of the Game
-            ul.mb-0.ms-n3
-                li A Contest is 5 games of Wordle with a time limit of 60 seconds per game
-                li If you fail to solve the game in 60 seconds a penalty of 30 seconds is added.
-                li Score is calculated based on total time taken to solve all 5 games
-                li The player with the lowest score wins. 
-                li View Unicity Proof to verify leaderboard history (no cheating)
 
-        div.game-container
-            div.row
-                div.col-12.col-lg-7.mb-4
-                    div.row
-                        div.col-12.col-lg-3.mb-4.mb-lg-0
-                            div.controls-section.text-center
-                                div#timer.mb-3 60s
-                                form#competitor-selection
-                                    div.d-flex.justify-content-center.gap-2
-                                        button#startButton.btn.btn-primary.btn-lg Start Contest
-                        
-                        div.col-12.col-lg-9
-                            div.board-section
-                                h2 You
-                                div.d-flex.justify-content-center.mb-4#game-board
-                                    div.d-flex.flex-column
-                                        - for(let i = 0; i < 6; i++)
-                                            div.d-flex
-                                                - for(let j = 0; j < 5; j++)
-                                                    div.letter-box
-                                
-                                div#keyboard.container.mt-3
-                                    div.row.justify-content-center.g-1.mb-1
-                                        - const row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
-                                        each letter in row1
-                                            div.col-auto
-                                                button.btn.btn-light.key-box(data-key=letter)= letter
+	div.alert.bg-primary.text-white.mb-3
+		div.d-flex.justify-content-between.align-items-center
+			strong.me-2 Rules of the Game
+			button.btn.btn-link.p-0(
+				data-bs-toggle="collapse" 
+				data-bs-target="#welcomeText" 
+				aria-expanded="true"
+				aria-controls="welcomeText"
+		)
+				i.bi.bi-chevron-up.fs-5.fw-bold.text-white
 
-                                    div.row.justify-content-center.g-1.mb-1
-                                        - const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
-                                        each letter in row2
-                                            div.col-auto
-                                                button.btn.btn-light.key-box(data-key=letter)= letter
+		div#welcomeText.collapse.show
+			ul.mb-0
+				li A Contest is 5 games of Wordle with a time limit of 60 seconds per game
+				li If you fail to solve the game in 60 seconds a penalty of 30 seconds is added.
+				li Score is calculated based on total time taken to solve all 5 games
+				li The first word is randomly chose from the list of possible guesses
+				li The player with the lowest score wins. 
+				li View Unicity Proof to verify leaderboard history (no cheating)
 
-                                    div.row.justify-content-center.g-1
-                                        div.col-auto
-                                            button.btn.btn-light.key-box(data-key="ENTER") Enter
-                                        - const row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
-                                        each letter in row3
-                                            div.col-auto
-                                                button.btn.btn-light.key-box(data-key=letter)= letter
-                                        div.col-auto
-                                            button.btn.btn-light.key-box(data-key="BACK")
-                                                i.bi.bi-backspace-fill
+	div.container.mt-5
+		h1.text-center.mb-4  Combat Wordle
+		
 
-                div.col-12.col-lg-5
-                    div.contest-section.mt-4
-                        div.card
-                            div.card-header.bg-primary.text-white
-                                h3.mb-0 Contest Scores
-                            div.card-body
-                                table.table
-                                    thead
-                                        tr
-                                            th #
-                                            th Word
-                                            th Time
-                                            th Guesses
-                                            th Result
-                                    tbody#contestScores
-                                        - for(let i = 0; i < 5; i++)
-                                            tr
-                                                td= (i + 1)
-                                                td -
-                                                td -
-                                                td -
-                                                td -
-                                    tfoot.table-light
-                                        tr.fw-bold
-                                            td(colspan="2") Total
-                                            td#totalTime 0s
-                                            td#totalGuesses 0
-                                            td#finalResult
+		div.game-container
+			div.row
+				div.col-12.col-lg-7.mb-4
+					div.row
+						div.col-12.col-lg-3.mb-4.mb-lg-0
+							div.controls-section.text-center
+								div#timer.mb-3 60s
+								form#competitor-selection
+									div.d-flex.justify-content-center.gap-2
+										button#startButton.btn.btn-primary.btn-lg Start Contest
+						
+						div.col-12.col-lg-9
+							div.board-section
+								h2 You
+								div.d-flex.justify-content-center.mb-4#game-board
+									div.d-flex.flex-column
+										- for(let i = 0; i < 6; i++)
+											div.d-flex
+												- for(let j = 0; j < 5; j++)
+													div.letter-box
+								
+								div#keyboard.mt-3
+									div.row.justify-content-center.g-1.mb-1
+										- const row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
+										each letter in row1
+											div.col-auto
+												button.btn.btn-light.key-box(data-key=letter)= letter
 
-                    div.leaderboard-section.mt-4
-                        div.card
-                            div.card-header.bg-primary.text-white
-                                h3.mb-0 Leaderboard
-                            div.card-body
-                                table.table
-                                    thead
-                                        tr
-                                            th Rank
-                                            th Player
-                                            th Time
-                                            th Date
-                                    tbody#leaderboardBody
+									div.row.justify-content-center.g-1.mb-1
+										- const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
+										each letter in row2
+											div.col-auto
+												button.btn.btn-light.key-box(data-key=letter)= letter
 
-    div#messageModal.modal.fade(tabindex='-1' role='dialog' aria-hidden='true')
-        div.modal-dialog.modal-dialog-centered(role='document')
-            div.modal-content
-                div.modal-header
-                    h5#messageModalTitle.modal-title Game Over
-                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-                div#messageModalBody.modal-body
-                    p
-                div.modal-footer
-                    button#modalSubmitBtn.btn.btn-primary.d-none(type='button' onclick='submitPlayerName()') Submit Score
-                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+									div.row.justify-content-center.g-1
+										div.col-auto
+											button.btn.btn-light.key-box(data-key="ENTER") Enter
+										- const row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+										each letter in row3
+											div.col-auto
+												button.btn.btn-light.key-box(data-key=letter)= letter
+										div.col-auto
+											button.btn.btn-light.key-box(data-key="BACK")
+												i.bi.bi-backspace-fill
 
-    script(src="/js/websocket-manager.js")
-    script(src="/js/speedwordlecontest-sock.js")
+				div.col-12.col-lg-5
+					div.contest-section.mt-4
+						div.card
+							div.card-header.bg-primary.text-white
+								h3.mb-0 Contest Scores
+							div.card-body
+								table.table
+									thead
+										tr
+											th #
+											th Word
+											th Time
+											th Guesses
+											th Result
+									tbody#contestScores
+										- for(let i = 0; i < 5; i++)
+											tr
+												td= (i + 1)
+												td -
+												td -
+												td -
+												td -
+									tfoot.table-light
+										tr.fw-bold
+											td(colspan="2") Total
+											td#totalTime 0s
+											td#totalGuesses 0
+											td#finalResult
+
+					div.leaderboard-section.mt-4
+						div.card
+							div.card-header.bg-primary.text-white
+								h3.mb-0 Leaderboard
+							div.card-body
+								table.table
+									thead
+										tr
+											th Rank
+											th Player
+											th Time
+											th Date
+									tbody#leaderboardBody
+
+	div#messageModal.modal.fade(tabindex='-1' role='dialog' aria-hidden='true')
+		div.modal-dialog.modal-dialog-centered(role='document')
+			div.modal-content
+				div.modal-header
+					h5#messageModalTitle.modal-title Game Over
+					button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+				div#messageModalBody.modal-body
+					p
+				div.modal-footer
+					button#modalSubmitBtn.btn.btn-primary.d-none(type='button' onclick='submitPlayerName()') Submit Score
+					button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+
+	script(src="/js/webSocketManager.js")
+	script(src="/js/speedwordlecontest-sock.js")

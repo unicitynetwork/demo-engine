@@ -6,7 +6,7 @@ Welcome to the **Unicity Demo Engine**! This project serves as a framework for c
 
 - **Node.js** - Runtime environment
 - **Express.js** - Web application framework
-- **Socket.IO** - Real-time, bidirectional communication
+- **Web Socket** - Real-time, bidirectional communication
 - **Pug** - Template engine
 - **Bootstrap** - Frontend framework for responsive design
 
