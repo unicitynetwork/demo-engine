@@ -1,0 +1,21 @@
+//- views/agentvsagent.pug
+extends layout
+
+block content
+  .container-fluid.py-4
+    .row
+      .col-12
+        h2.mb-4 Agent Visualization
+        #agentContainer.position-relative.bg-light.rounded(style='height: 70vh')
+          canvas#agentsCanvas.w-100.h-100
+        #error.alert.alert-danger.mt-3(style='display: none')
+        #stats.card.mt-3(style='display: none')
+          .card-body
+            h5.card-title Statistics
+            .card-text
+              p.mb-1#placedAgents
+              p.mb-1#theoreticalMax
+              p.mb-1#attempts
+              p.mb-0#currentRadius
+
+  script(src='/js/multi-agent.js')

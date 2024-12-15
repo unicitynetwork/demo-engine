@@ -1,0 +1,52 @@
+//- views/agentvsagent.pug
+extends layout
+
+block content
+  .container-fluid
+    .row.mb-3
+      .col-12
+        h1.display-4 Agent DeathMatch
+        p.lead Watch agents compete in real-time matches
+    
+    .row
+      .col-md-9
+        .card
+          .card-body
+            #game-container.position-relative
+              canvas#game-canvas(width=width height=height)
+              #loading-overlay.position-absolute.top-0.start-0.w-100.h-100.d-none
+                .d-flex.justify-content-center.align-items-center.h-100
+                  .spinner-border.text-primary(role='status')
+                    span.visually-hidden Loading...
+      
+      .col-md-3
+        .card.mb-3
+          .card-header Game Controls
+          .card-body
+            button#startGame.btn.btn-primary.btn-lg.w-100 Start Game
+            
+        .card.mb-3
+          .card-header Game Stats
+          .card-body
+            ul.list-group.list-group-flush
+              li.list-group-item.d-flex.justify-content-between.align-items-center
+                span Round
+                span#roundCounter.badge.bg-primary 0
+              li.list-group-item.d-flex.justify-content-between.align-items-center
+                span Active Agents
+                span#activeAgents.badge.bg-success= gameState.totalAgents
+              li.list-group-item.d-flex.justify-content-between.align-items-center
+                span Highest Balance
+                span#highestBalance.badge.bg-info 100
+              li.list-group-item.d-flex.justify-content-between.align-items-center
+                span Lowest Balance
+                span#lowestBalance.badge.bg-warning 100
+
+  script.
+    // Pass server data to client
+    window.GAME_CONFIG = {
+      initialAgents: !{initialAgents},
+      gameState: !{JSON.stringify(gameState)},
+      socketConfig: !{JSON.stringify(socketConfig)}
+    };
+  script(src='/js/deathmatch.js')

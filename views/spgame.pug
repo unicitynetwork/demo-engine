@@ -1,90 +1,94 @@
 extends layout
 
 block content
-	div.container.mt-5
-		h1.text-center.mb-4
+  div.container.mt-5
+    h1.text-center.mb-4
 
-		div.game-container
-			div.row
-				// Controls column - left side on large screens, top on mobile
-				div.col-12.col-lg-3.mb-4.mb-lg-0
-					div.controls-section.text-center
-						div.wallet-section.mb-4
-							button#connectWallet.btn.btn-outline-primary.mb-2 Connect Wallet
-							div#walletBalance.d-none
-								strong.me-2 Balance:
-								span.balance-amount
-								span.ms-2.badge.bg-secondary ALPHA
-						form#competitor-selection.mb-4
-							div.form-group
-								label.h6.mb-2(for="competitor") Choose  Competitor:
-								select#competitor.form-select.form-select-sm.mb-3(name="competitor", style="width: 150px; margin: 0 auto;")
-									option(value="beginner")  Minimax (easy)
-									option(value="intermediate") Constraints
-									option(value="advanced") GPT (hard)
-							div.d-flex.justify-content-center.gap-2
-								button#startButton.btn.btn-primary.btn-lg(style="width: 150px") Start Game
-								button#resetButton.btn.btn-primary.btn-lg.ms-2.d-none Play Again
+    div.game-container
+      div.row
+        // Controls column - left side on large screens, top on mobile
+        div.col-12.col-lg-3.mb-4.mb-lg-0
+          div.controls-section.text-center
+            form#competitor-selection.mb-4
+              div.form-group
+                label.h6.mb-2(for="competitor") Choose Competitor:
+                select#competitor.form-select.form-select-sm.mb-3(name="competitor", style="width: 150px; margin: 0 auto;")
+                  option(value="beginner") Minimax (easy)
+                  option(value="intermediate") Constraints
+                  option(value="advanced") GPT (hard)
+              div.d-flex.flex-column.align-items-center.gap-2
+                button#startButton.btn.btn-primary.btn-lg(style="width: 150px") Start Game
+                button#mintToken.btn.btn-primary.btn-lg(style="width: 150px") Mint Token
+                button#resetButton.btn.btn-primary.btn-lg.ms-2.d-none Play Again
+              
+            div.secret-section.mb-4.mt-4
+              div.form-group
+                label.h6.mb-2(for="unicity-secret") Enter Unicity Secret:
+                input#unicity-secret.form-control.mb-2(type="text" placeholder="Enter your secret" style="width: 200px; margin: 0 auto;")
+              div#walletBalance.border.rounded.p-2.mt-3(style="width: 200px; margin: 0 auto;")
+                strong.me-2 Balance:
+                span.balance-amount 0
+                span.ms-2.badge.bg-secondary ALPHA
 
-				// Game boards column - right side on large screens, below on mobile
-				div.col-12.col-lg-9
-					div.row
-						// Player's board
-						div.col-12.col-md-6.mb-4
-							div.board-section
-								h2 You
-								div.d-flex.justify-content-center.mb-4#game-board
-									div.d-flex.flex-column
-										- for(let i = 0; i < 6; i++)
-											div.d-flex
-												- for(let j = 0; j < 5; j++)
-													div.letter-box
+        // Game boards column - right side on large screens, below on mobile
+        div.col-12.col-lg-9
+          div.row
+            // Player's board
+            div.col-12.col-md-6.mb-4
+              div.board-section
+                h2 You
+                div.d-flex.justify-content-center.mb-4#game-board
+                  div.d-flex.flex-column
+                    - for(let i = 0; i < 6; i++)
+                      div.d-flex
+                        - for(let j = 0; j < 5; j++)
+                          div.letter-box
 
-								div#keyboard.container.mt-3
-									div.row.justify-content-center.g-1.mb-1
-										- const row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
-										each letter in row1
-											div.col-auto
-												button.btn.btn-light.key-box(data-key=letter)= letter
+                div#keyboard.container.mt-3
+                  div.row.justify-content-center.g-1.mb-1
+                    - const row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
+                    each letter in row1
+                      div.col-auto
+                        button.btn.btn-light.key-box(data-key=letter)= letter
 
-									div.row.justify-content-center.g-1.mb-1
-										- const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
-										each letter in row2
-											div.col-auto
-												button.btn.btn-light.key-box(data-key=letter)= letter
+                  div.row.justify-content-center.g-1.mb-1
+                    - const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
+                    each letter in row2
+                      div.col-auto
+                        button.btn.btn-light.key-box(data-key=letter)= letter
 
-									div.row.justify-content-center.g-1
-										div.col-auto
-											button.btn.btn-light.key-box(data-key="ENTER") Enter
-										- const row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
-										each letter in row3
-											div.col-auto
-												button.btn.btn-light.key-box(data-key=letter)= letter
-										div.col-auto
-											button.btn.btn-light.key-box(data-key="BACK")
-												i.bi.bi-backspace-fill
+                  div.row.justify-content-center.g-1
+                    div.col-auto
+                      button.btn.btn-light.key-box(data-key="ENTER") Enter
+                    - const row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+                    each letter in row3
+                      div.col-auto
+                        button.btn.btn-light.key-box(data-key=letter)= letter
+                    div.col-auto
+                      button.btn.btn-light.key-box(data-key="BACK")
+                        i.bi.bi-backspace-fill
 
-						// AI's board
-						div.col-12.col-md-6.mb-4
-							div.board-section
-								h2 Agent
-								div.d-flex.justify-content-center.mb-4#ai-board
-									div.d-flex.flex-column
-										- for(let i = 0; i < 6; i++)
-											div.d-flex
-												- for(let j = 0; j < 5; j++)
-													div.letter-box
+            // AI's board
+            div.col-12.col-md-6.mb-4
+              div.board-section
+                h2 Agent
+                div.d-flex.justify-content-center.mb-4#ai-board
+                  div.d-flex.flex-column
+                    - for(let i = 0; i < 6; i++)
+                      div.d-flex
+                        - for(let j = 0; j < 5; j++)
+                          div.letter-box
 
-	div#messageModal.modal.fade(tabindex='-1' role='dialog' aria-hidden='true')
-		div.modal-dialog.modal-dialog-centered(role='document')
-			div.modal-content
-				div.modal-header
-					h5#messageModalTitle.modal-title Game Over
-					button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-				div#messageModalBody.modal-body
-					p
-				div.modal-footer
-					button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
-	
-	script(src="/js/webSocketManager.js")
-	script(src="/js/playervmodel-sock.js")
+  div#messageModal.modal.fade(tabindex='-1' role='dialog' aria-hidden='true')
+    div.modal-dialog.modal-dialog-centered(role='document')
+      div.modal-content
+        div.modal-header
+          h5#messageModalTitle.modal-title Game Over
+          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+        div#messageModalBody.modal-body
+          p
+        div.modal-footer
+          button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
+  
+  script(src="/js/webSocketManager.js")
+  script(src="/js/playervmodel-sock.js")

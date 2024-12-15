@@ -399,6 +399,8 @@ const demoRouter = require('./routes/demoRouter.js');
 app.use('/', demoRouter);
 
 
+const apiRouter = require('./routes/apiRouter.js');
+app.use('/', apiRouter);
 
 
 // Import the error-handling middleware

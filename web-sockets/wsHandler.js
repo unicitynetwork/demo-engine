@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 const PlayervModelServer = require('./PlayervModelServer');
 const SpeedWordleContestServer = require('./SpeedWordleContestServer');
+const DeathMatchServer = require('./DeathMatchServer');
 const leaderboardManager = require('../app/leaderboard');  
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('../utils/logger');
 
@@ -66,6 +67,9 @@ function initializeWebSockets(server, sessionMiddleware) {
                                 break;
                             case 'speedWordleContest':
                                 activeServer = SpeedWordleContestServer;
+                                break;
+                            case 'deathmatch':  // Add DeathMatch case
+                                activeServer = DeathMatchServer;
                                 break;
                             default:
                                 console.warn('Unknown game type:', data.gameType);

@@ -5,6 +5,8 @@ let currentTile = 0;
 let currentRow = 0;
 const wordLength = 5;  
 
+let tokenJsons = [];
+
 let selectedCompetitor = 'beginner'
 
 console.log('PlayervModel script loaded at:', Date.now());
@@ -158,7 +160,16 @@ document.getElementById('startButton').addEventListener('click', function(e) {
     }
 });
 
+document.getElementById('mintButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (!gameStarted) {
 
+        this.disabled = true;
+        
+
+
+    }
+});
 // Function to handle the game start response from the server
 function handleGameStart(data) {
     console.log('Game started:', data);
