@@ -14,7 +14,8 @@ console.log('PlayervModel script loaded at:', Date.now());
 const wsManager = new WebSocketManager();
 const socket = wsManager.connect();
 
-
+// Game state management
+const refereePointer= window.GAME_CONFIG.refereePointer;
 
 
 socket.addEventListener('message', (event) => {
@@ -160,16 +161,46 @@ document.getElementById('startButton').addEventListener('click', function(e) {
     }
 });
 
-document.getElementById('mintButton').addEventListener('click', function(e) {
+document.getElementById('mintToken').addEventListener('click', async function(e) {
     e.preventDefault();
     if (!gameStarted) {
-
         this.disabled = true;
-        
-	
 
+        const transport = TXF.getHTTPTransport(TXF.defaultGateway());
+	    const secret = document.getElementById("unicity-secret").value;
+	    const tokenId = TXF.generateRandom256BitHex();
+        const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
+        const value = '10';
+	    const nonce = TXF.generateRandom256BitHex();
+	    const salt = TXF.generateRandom256BitHex();
+	    const token = await TXF.mint({
+		token_id: tokenId, token_class_id: tokenClass, token_value: value, sign_alg: 'secp256k1', hash_alg: 'sha256', 
+		secret, nonce, mint_salt: salt, transport
+	    });
+
+	    const json = TXF.exportFlow(token, null, true);
+        tokenJsons.push(json);
+        updateBalance();
     }
 });
+
+async function updateBalance() {
+    const transport = TXF.getHTTPTransport(TXF.defaultGateway());
+	const secret = document.getElementById("unicity-secret").value;
+    let balance = 0;
+    for (let i = 0; i < tokenJsons.length; i++) {
+	    const token = await TXF.importFlow(tokenJsons[i]);
+        console.log(token);
+        console.log(await TXF.getTokenStatus(token, secret, transport));
+        const status = await TXF.getTokenStatus(token, secret, transport);
+        if(status.owned && status.unspent) {
+            value = parseInt((await TXF.getTokenStatus(token, secret, transport)).value);
+            balance += value;
+        }
+    }
+    document.getElementById("walletBalance").textContent = balance.toString() + " ALPHA";
+}
+
 // Function to handle the game start response from the server
 function handleGameStart(data) {
     console.log('Game started:', data);

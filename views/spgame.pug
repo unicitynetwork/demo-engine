@@ -89,6 +89,11 @@ block content
           p
         div.modal-footer
           button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Close
-  
+
+  script.
+    window.GAME_CONFIG = {
+      refereePointer: !{JSON.stringify(refereePointer)},
+    };
   script(src="/js/webSocketManager.js")
   script(src="/js/playervmodel-sock.js")
+  script(src="https://unicitynetwork.github.io/tx-flow-engine/txf.min.js")

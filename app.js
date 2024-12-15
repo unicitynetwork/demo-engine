@@ -18,7 +18,6 @@ const debug = require("debug");
 const utils = require("./utils/utils");
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('./utils/logger');
 
-const refereeSecret = 'referee-secret';
 // Create our Express application instance
 const app = express();
 

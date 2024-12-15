@@ -3,18 +3,21 @@ const { router: debugLog, error: debugErrorLog } = require('../utils/logger');
 const { SingleThreadGame, AgentvAgentGame } = require('../app/AgentvAgent');
 const { validateSpace, generateRandomPoints } = require('../utils/poisson');
 const { DeathMarch } = require('../app/DeathMatch');
-const router = express.Router();
-const DM_CONFIG = require('../config/gameConfig');
+const { validateOrConvert, calculatePointer, generateRandom256BitHex } = require('../public/js/tx-flow-engine/state_machine.js');
 
-const tokenClass = const tokenClass = TXF.validateOrConvert("unicity_test_coin");
+const router = express.Router();
+
+const refereeSecret = 'referee-secret';
+
+const tokenClass = validateOrConvert('token_class', 'unicity_test_coin');
 let nonces = [];
 
 router.get("/spgame", async (req, res) => {
     debugLog('Loading speed wordle game');
-    const nonce = TXF.generateRandom256BitHex();
+    const nonce = generateRandom256BitHex();
     nonces.push(nonce);
-    const refereePointer = await TXF.calculatePointer({token_class_id: tokenClass, sign_alg: 'secp256k1', hash_alg: 'sha256',
-	secret, nonce});
+    const refereePointer = await calculatePointer({token_class_id: tokenClass, sign_alg: 'secp256k1', hash_alg: 'sha256',
+	refereeSecret, nonce});
     res.render("spgame", {refereePointer});
 });
 
