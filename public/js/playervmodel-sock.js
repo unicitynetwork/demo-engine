@@ -166,7 +166,7 @@ document.getElementById('mintButton').addEventListener('click', function(e) {
 
         this.disabled = true;
         
-
+	
 
     }
 });

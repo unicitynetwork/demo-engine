@@ -6,10 +6,16 @@ const { DeathMarch } = require('../app/DeathMatch');
 const router = express.Router();
 const DM_CONFIG = require('../config/gameConfig');
 
+const tokenClass = const tokenClass = TXF.validateOrConvert("unicity_test_coin");
+let nonces = [];
 
-router.get("/spgame", (req, res) => {
+router.get("/spgame", async (req, res) => {
     debugLog('Loading speed wordle game');
-    res.render("spgame");
+    const nonce = TXF.generateRandom256BitHex();
+    nonces.push(nonce);
+    const refereePointer = await TXF.calculatePointer({token_class_id: tokenClass, sign_alg: 'secp256k1', hash_alg: 'sha256',
+	secret, nonce});
+    res.render("spgame", {refereePointer});
 });
 
 router.get("/", (req, res) => {

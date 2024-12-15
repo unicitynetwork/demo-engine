@@ -1,0 +1,3 @@
+[submodule "public/js/tx-flow-engine"]
+	path = public/js/tx-flow-engine
+	url = git@github.com:unicitynetwork/tx-flow-engine.git
