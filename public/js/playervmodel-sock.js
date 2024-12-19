@@ -5,7 +5,6 @@ let currentTile = 0;
 let currentRow = 0;
 const wordLength = 5;  
 
-let tokenJsons = [];
 
 let selectedCompetitor = 'beginner'
 
@@ -15,7 +14,10 @@ const wsManager = new WebSocketManager();
 const socket = wsManager.connect();
 
 // Game state management
-const refereePointer= window.GAME_CONFIG.refereePointer;
+//const refereePointer= window.GAME_CONFIG.refereePointer;
+
+let pool;
+let referee_addr;
 
 
 socket.addEventListener('message', (event) => {
@@ -53,6 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     // Hide it initially
     modalElement.style.display = 'none'
+
+    pool = TXF.getTokenPool();
+    referee_addr = TXF.generateRecipientPubkeyAddr("refereesecret");
 
 });
 
@@ -142,7 +147,7 @@ function clearBoard(boardId) {
     });
 }
 
-document.getElementById('startButton').addEventListener('click', function(e) {
+document.getElementById('startButton').addEventListener('click', async function(e) {
     e.preventDefault();
     if (!gameStarted) {
         this.textContent = 'Loading...';
@@ -151,12 +156,19 @@ document.getElementById('startButton').addEventListener('click', function(e) {
         clearBoard('#game-board');
         clearBoard('#ai-board');
 
+	const secret = document.getElementById("unicity-secret").value;
+        const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
+        const value = 10;
+
+	const jsonTokens = await TXF.sendTokens(secret, pool, tokenClass, value, referee_addr);
 
         // Send the 'start_game' message to the server via WebSocket
         socket.send(JSON.stringify({ 
             type: 'start_game',
             gameType: 'playervModel',
-            competitor: selectedCompetitor
+            competitor: selectedCompetitor,
+	    tokens: jsonTokens,
+	    client_addr: TXF.generateRecipientPubkeyAddr(secret)
         }));
     }
 });
@@ -166,38 +178,20 @@ document.getElementById('mintToken').addEventListener('click', async function(e)
     if (!gameStarted) {
         this.disabled = true;
 
-        const transport = TXF.getHTTPTransport(TXF.defaultGateway());
-	    const secret = document.getElementById("unicity-secret").value;
-	    const tokenId = TXF.generateRandom256BitHex();
+	const secret = document.getElementById("unicity-secret").value;
         const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
-        const value = '10';
-	    const nonce = TXF.generateRandom256BitHex();
-	    const salt = TXF.generateRandom256BitHex();
-	    const token = await TXF.mint({
-		token_id: tokenId, token_class_id: tokenClass, token_value: value, sign_alg: 'secp256k1', hash_alg: 'sha256', 
-		secret, nonce, mint_salt: salt, transport
-	    });
-
-	    const json = TXF.exportFlow(token, null, true);
-        tokenJsons.push(json);
+        const value = 10;
+	await TXF.createToken(secret, pool, tokenClass, value);
         updateBalance();
     }
 });
 
 async function updateBalance() {
-    const transport = TXF.getHTTPTransport(TXF.defaultGateway());
-	const secret = document.getElementById("unicity-secret").value;
-    let balance = 0;
-    for (let i = 0; i < tokenJsons.length; i++) {
-	    const token = await TXF.importFlow(tokenJsons[i]);
-        console.log(token);
-        console.log(await TXF.getTokenStatus(token, secret, transport));
-        const status = await TXF.getTokenStatus(token, secret, transport);
-        if(status.owned && status.unspent) {
-            value = parseInt((await TXF.getTokenStatus(token, secret, transport)).value);
-            balance += value;
-        }
-    }
+    const secret = document.getElementById("unicity-secret").value;
+    const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
+
+    const tokens = await TXF.findTokens(secret, pool, tokenClass, 0);
+    const balance = tokens.totalValue;
     document.getElementById("walletBalance").textContent = balance.toString() + " ALPHA";
 }
 

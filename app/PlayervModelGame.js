@@ -1,5 +1,6 @@
 // PlayervModelGame.js
 
+const { getTokenPool, createToken, sendTokens, receiveTokens } = require('../public/js/tx-flow-engine/state_machine.js');
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('../utils/logger');
 
 const MAX_GUESSES = 6;
@@ -7,6 +8,8 @@ const MAX_GUESSES = 6;
 const Minimax = require('./Minimax.js');
 const Constraints = require('./Constraints.js');
 
+let pool;
+let secret;
 
 // Helper function to create a timeout promise
 function timeout(ms) {
@@ -23,7 +26,12 @@ function sleep(ms) {
 
 
 class PlayervModelGame {
-    constructor(startWord, answerWord, competitor) {
+    constructor(startWord, answerWord, competitor, tokens) {
+
+	pool = getTokenPool();
+	secret = 'refereesecret';
+
+	receiveTokens(secret, pool, tokens);
 
         if (!startWord || startWord.length !== 5) {
             throw new Error('Invalid start word provided');

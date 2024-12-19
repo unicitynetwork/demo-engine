@@ -8,7 +8,7 @@ class PlayervModelGameServer {
         this.connections = new Map(); // sessionId -> websocket
     }
 
-    handleStartGame(sessionId,competitor) {
+    handleStartGame(sessionId,competitor,tokens) {
         debugLog('Handling start game request for session:', sessionId);
         
         try {
@@ -23,7 +23,7 @@ class PlayervModelGameServer {
                 answerWord = global.VALID_ANSWERS[Math.floor(Math.random() * global.VALID_ANSWERS.length)];
             } while (answerWord === startWord);
 
-            const game = new PlayervModelGame(startWord, answerWord, competitor);
+            const game = new PlayervModelGame(startWord, answerWord, competitor, tokens);
             this.games.set(sessionId, game);
  
             const ws = this.connections.get(sessionId);
@@ -147,7 +147,7 @@ class PlayervModelGameServer {
     handleMessage(sessionId, data) {
         switch(data.type) {
             case 'start_game':
-                this.handleStartGame(sessionId, data.competitor);
+                this.handleStartGame(sessionId, data.competitor, data.tokens);
                 break;
             case 'make_guess':
                 this.handleGuess(sessionId, data.guess);

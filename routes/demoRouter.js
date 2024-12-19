@@ -16,9 +16,9 @@ router.get("/spgame", async (req, res) => {
     debugLog('Loading speed wordle game');
     const nonce = generateRandom256BitHex();
     nonces.push(nonce);
-    const refereePointer = await calculatePointer({token_class_id: tokenClass, sign_alg: 'secp256k1', hash_alg: 'sha256',
-	refereeSecret, nonce});
-    res.render("spgame", {refereePointer});
+//    const refereePointer = await calculatePointer({token_class_id: tokenClass, sign_alg: 'secp256k1', hash_alg: 'sha256',
+//	refereeSecret, nonce});
+    res.render("spgame");
 });
 
 router.get("/", (req, res) => {
