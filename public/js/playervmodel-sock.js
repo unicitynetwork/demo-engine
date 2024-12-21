@@ -157,8 +157,8 @@ document.getElementById('startButton').addEventListener('click', async function(
         clearBoard('#ai-board');
 
 	const secret = document.getElementById("unicity-secret").value;
-        const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
-        const value = 10;
+    const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
+    const value = 10;
 
 	const jsonTokens = await TXF.sendTokens(secret, pool, tokenClass, value, referee_addr);
 
@@ -167,8 +167,8 @@ document.getElementById('startButton').addEventListener('click', async function(
             type: 'start_game',
             gameType: 'playervModel',
             competitor: selectedCompetitor,
-	    tokens: jsonTokens,
-	    client_addr: TXF.generateRecipientPubkeyAddr(secret)
+	        tokens: jsonTokens,
+	        client_addr: TXF.generateRecipientPubkeyAddr(secret)
         }));
     }
 });

@@ -1,6 +1,5 @@
 // PlayervModelGame.js
 
-const { getTokenPool, createToken, sendTokens, receiveTokens } = require('../public/js/tx-flow-engine/state_machine.js');
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('../utils/logger');
 
 const MAX_GUESSES = 6;
@@ -26,12 +25,8 @@ function sleep(ms) {
 
 
 class PlayervModelGame {
-    constructor(startWord, answerWord, competitor, tokens) {
+    constructor(startWord, answerWord, competitor) {
 
-	pool = getTokenPool();
-	secret = 'refereesecret';
-
-	receiveTokens(secret, pool, tokens);
 
         if (!startWord || startWord.length !== 5) {
             throw new Error('Invalid start word provided');

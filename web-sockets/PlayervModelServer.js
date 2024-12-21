@@ -1,4 +1,5 @@
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('../utils/logger');
+const { getTokenPool, createToken, sendTokens, receiveTokens } = require('../public/js/tx-flow-engine/state_machine.js');
 const PlayervModelGame = require("../app/PlayervModelGame");
   
 
@@ -6,6 +7,7 @@ class PlayervModelGameServer {
     constructor() {
         this.games = new Map();      // sessionId -> game instance
         this.connections = new Map(); // sessionId -> websocket
+        this.tokenpool = new Map(); // token pool
     }
 
     handleStartGame(sessionId,competitor,tokens) {
@@ -23,8 +25,15 @@ class PlayervModelGameServer {
                 answerWord = global.VALID_ANSWERS[Math.floor(Math.random() * global.VALID_ANSWERS.length)];
             } while (answerWord === startWord);
 
-            const game = new PlayervModelGame(startWord, answerWord, competitor, tokens);
+
+
+            let pool = getTokenPool();
+            receiveTokens('refereesecret', pool, tokens);
+            this.tokenpool.set(sessionId, pool);
+
+            const game = new PlayervModelGame(startWord, answerWord, competitor);
             this.games.set(sessionId, game);
+
  
             const ws = this.connections.get(sessionId);
             ws.send(JSON.stringify({
@@ -82,6 +91,18 @@ class PlayervModelGameServer {
     
         game.completed = true;
         const timeTaken = (game.completedTime - game.startTime) / 1000;
+
+        const handleTokenLogic = (resultMessage) => {
+            
+            if (resultMessage.includes("Agent wins")) {
+
+
+            } else if (resultMessage.includes("Player wins")) {
+ 
+            } else if (resultMessage.includes("Draw")) {
+                
+            } else throw new Error('Unrecognized game result in token handling: ' + sessionId);
+        };
     
         // If AI isn't done yet
         if (!game.agentGamePlay) {
@@ -96,9 +117,12 @@ class PlayervModelGameServer {
     
             // Wait for AI and then send complete game over
             game.agentGamePlayPromise.then(() => {
-                debugLog('Result from AI:', game.agentGamePlay);  // This is the result you're interested in
+                debugLog('Result from AI:', game.agentGamePlay);  
         
                 const resultMessage = game.compareResults(game, game.agentGamePlay);
+                handleTokenLogic(resultMessage);
+
+
                 ws.send(JSON.stringify({
                     type: 'game_over',
                     guesses: game.guesses,
@@ -111,6 +135,7 @@ class PlayervModelGameServer {
         } else {
             // AI is done, send complete results immediately
             const resultMessage = game.compareResults(game, game.agentGamePlay);
+            handleTokenLogic(resultMessage);
             ws.send(JSON.stringify({
                 type: 'game_over',
                 guesses: game.guesses,
