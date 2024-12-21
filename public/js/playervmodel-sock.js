@@ -219,7 +219,7 @@ async function handleGameOver(data) {
 
     if (data.jsonTokens){
         const secret = document.getElementById("unicity-secret").value;
-        await TXF.receiveTokens(secret, pool, data.jasonTokens);
+        await TXF.receiveTokens(secret, pool, data.jsonTokens);
         updateBalance();
     }
     
