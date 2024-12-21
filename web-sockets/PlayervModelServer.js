@@ -1,16 +1,19 @@
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('../utils/logger');
-const { getTokenPool, createToken, sendTokens, receiveTokens } = require('../public/js/tx-flow-engine/state_machine.js');
+const { getTokenPool, createToken, findTokens, sendTokens, receiveTokens, validateOrConvert } = require('../public/js/tx-flow-engine/state_machine.js');
 const PlayervModelGame = require("../app/PlayervModelGame");
+const secret = 'refereesecret';
+const tokenClass = validateOrConvert('token_class', 'unicity_test_coin');
   
 
 class PlayervModelGameServer {
     constructor() {
         this.games = new Map();      // sessionId -> game instance
         this.connections = new Map(); // sessionId -> websocket
-        this.tokenpool = new Map(); // token pool
+        this.tokenpool = new Map(); // sessionId -> token pool
+        this.client_addr = new Map(); // sessionId -> client addresses
     }
 
-    handleStartGame(sessionId,competitor,tokens) {
+    async handleStartGame(sessionId,competitor,tokens,client_addr){
         debugLog('Handling start game request for session:', sessionId);
         
         try {
@@ -25,11 +28,19 @@ class PlayervModelGameServer {
                 answerWord = global.VALID_ANSWERS[Math.floor(Math.random() * global.VALID_ANSWERS.length)];
             } while (answerWord === startWord);
 
-
+    
 
             let pool = getTokenPool();
-            receiveTokens('refereesecret', pool, tokens);
+            await receiveTokens('refereesecret', pool, tokens);
             this.tokenpool.set(sessionId, pool);
+            this.client_addr.set(sessionId, client_addr);
+
+            const foundtokens = await findTokens(secret, pool, tokenClass, 0);
+            const balance = foundtokens.totalValue;
+            if (balance < 10) {
+                this.sendError(sessionId, 'Insufficient tokens to start game');
+                return;     
+            }
 
             const game = new PlayervModelGame(startWord, answerWord, competitor);
             this.games.set(sessionId, game);
@@ -84,6 +95,8 @@ class PlayervModelGameServer {
     async handleGameOver(sessionId) {
         const game = this.games.get(sessionId);
         const ws = this.connections.get(sessionId);
+        const pool = this.tokenpool.get(sessionId);
+        const client_addr = this.client_addr.get(sessionId);
     
         if (!game || !ws) {
             throw new Error('Game not found for session ID: ' + sessionId);
@@ -92,14 +105,19 @@ class PlayervModelGameServer {
         game.completed = true;
         const timeTaken = (game.completedTime - game.startTime) / 1000;
 
-        const handleTokenLogic = (resultMessage) => {
+        const handleTokenLogic = async (resultMessage) => {
             
             if (resultMessage.includes("Agent wins")) {
 
-
-            } else if (resultMessage.includes("Player wins")) {
+            } else if (resultMessage.includes("You win")) {
+                const value = 10;
+	            await createToken(secret, pool, tokenClass, value);
+                const jsonTokens = await sendTokens(secret, pool, tokenClass, value*2, client_addr);
+                return jsonTokens;
  
             } else if (resultMessage.includes("Draw")) {
+                const jsonTokens = await sendTokens(secret, pool, tokenClass, 10, client_addr);
+                return jsonTokens;
                 
             } else throw new Error('Unrecognized game result in token handling: ' + sessionId);
         };
@@ -116,11 +134,11 @@ class PlayervModelGameServer {
             }));
     
             // Wait for AI and then send complete game over
-            game.agentGamePlayPromise.then(() => {
+            game.agentGamePlayPromise.then(async () => {
                 debugLog('Result from AI:', game.agentGamePlay);  
         
                 const resultMessage = game.compareResults(game, game.agentGamePlay);
-                handleTokenLogic(resultMessage);
+                const jsonTokens = await handleTokenLogic(resultMessage);
 
 
                 ws.send(JSON.stringify({
@@ -129,25 +147,28 @@ class PlayervModelGameServer {
                     answerWord: game.answerWord,
                     timeTaken: timeTaken,
                     agentGamePlay: game.agentGamePlay,
-                    resultMessage: resultMessage
+                    resultMessage: resultMessage,
+                    jsonTokens: jsonTokens
                 }));
             });
         } else {
             // AI is done, send complete results immediately
             const resultMessage = game.compareResults(game, game.agentGamePlay);
-            handleTokenLogic(resultMessage);
+
+            const jsonTokens = await handleTokenLogic(resultMessage);
+
             ws.send(JSON.stringify({
                 type: 'game_over',
                 guesses: game.guesses,
                 answerWord: game.answerWord,
                 timeTaken: timeTaken,
                 agentGamePlay: game.agentGamePlay,
-                resultMessage: resultMessage
+                resultMessage: resultMessage,
+                jsonTokens: jsonTokens
             }));
         }
     }
    
-
 
 
     sendError(sessionId, message) {
@@ -172,7 +193,7 @@ class PlayervModelGameServer {
     handleMessage(sessionId, data) {
         switch(data.type) {
             case 'start_game':
-                this.handleStartGame(sessionId, data.competitor, data.tokens);
+                this.handleStartGame(sessionId, data.competitor, data.tokens, data.client_addr);
                 break;
             case 'make_guess':
                 this.handleGuess(sessionId, data.guess);

@@ -213,9 +213,15 @@ function handleGameStart(data) {
     document.getElementById('startButton').textContent = 'Game In Progress';
 }
 
-function handleGameOver(data) {
+async function handleGameOver(data) {
    
     updateGameBoard('#game-board', data.guesses);
+
+    if (data.jsonTokens){
+        const secret = document.getElementById("unicity-secret").value;
+        await TXF.receiveTokens(secret, pool, data.jasonTokens);
+        updateBalance();
+    }
     
     if (!data.agentGamePlay) {
         // AI still calculating - don't end game yet
