@@ -7,7 +7,7 @@ class Agent {
     }
 
     makeGuess() {
-        this.heavyComputation(1000000*0+1000000); 
+        //this.heavyComputation(1000000*0+1000000); 
         return Math.random() < 0.5 ? 'heads' : 'tails';
     }
 

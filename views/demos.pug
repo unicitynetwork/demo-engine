@@ -1,0 +1,55 @@
+extends layout
+
+block content 
+	div.alert.bg-primary.text-white.mb-3
+		div.d-flex.justify-content-between.align-items-center
+			strong.me-2 These demos show different aspects of the Unicity Platform
+			button.btn.btn-link.p-0(
+				data-bs-toggle="collapse" 
+				data-bs-target="#welcomeText" 
+				aria-expanded="true"
+				aria-controls="welcomeText"
+		)
+				i.bi.bi-chevron-up.fs-5.fw-bold.text-white
+
+		div#welcomeText.collapse.show
+			ul.mb-0
+				li Combat Wordle tokenizes the leaderboard and provides proof of honest gameplay 
+				li Player v Agent shows how to mint tokens and transfer them agent to agent 
+				li Agent v Agent shows agents playing agents and making payments
+				li UniDex An exchange with a centralized order book and decentralized settlement
+				li WebGui - Raw web interface for minting and sending tokens 
+
+	div.container.mt-5
+		div.row.justify-content-center
+			div.col-md-6
+				div.card.shadow
+					div.card-header.bg-primary.text-white.text-center
+						h2.mb-0 Unicity Demos
+
+					div.mb-4.game-selection
+						//label.form-label.h5 Select Game
+						div.list-group
+							a(href="/speedwordlecontest").list-group-item.list-group-item-action
+								h5.mb-1 Combat Wordle
+								p.mb-1.game-desc Race against time
+
+							a(href="/spgame").list-group-item.list-group-item-action
+								h5.mb-1 Player vs Agent
+								p.mb-1.game-desc Challenge an Agent to Wordle
+
+							a(href="/deathmatch").list-group-item.list-group-item-action
+								h5.mb-1 Agent Death Match
+								p.mb-1.game-desc Watch agents play each other
+
+							a(href="/unidex").list-group-item.list-group-item-action
+								h5.mb-1 Unidex
+								p.mb-1.game-desc Exchange with decentralized settlement
+
+							a(href="https://unicitynetwork.github.io/tx-flow-engine/").list-group-item.list-group-item-action
+								h5.mb-1 Web Gui
+								p.mb-1.game-desc Mint and send Tokens 
+	div(style="height: 800px;")
+
+
+		script(src="/js/index.js")

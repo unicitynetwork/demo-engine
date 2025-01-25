@@ -17,6 +17,7 @@ const compression = require("compression");
 const debug = require("debug");
 const utils = require("./utils/utils");
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('./utils/logger');
+const helmet = require('helmet');
 
 // Create our Express application instance
 const app = express();
@@ -88,6 +89,12 @@ app.use((req, res, next) => {
     res.setHeader('X-Frame-Options', 'DENY');
     next();
 });
+
+app.use(
+    helmet.frameguard({
+      action: 'sameorigin'  // Only allows iframes from the same origin
+    })
+  );
 
 // Log cookie usage for debugging
 debugLog('Cookie parser and security headers configured');

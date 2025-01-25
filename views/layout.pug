@@ -14,6 +14,9 @@ html(lang="en")
         //- Basic favicon for most browsers
         link(rel="icon", type="image/x-icon", href=assetUrl("./favicon/favicon.ico"))
 
+        //- pdf reader
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css")
+
         //- Social media sharing
         meta(property="og:title" content="Unicity Demos ")
         meta(property="og:description" content="Demos highlight the Uncity Agent Plaform")
@@ -41,7 +44,7 @@ html(lang="en")
                 a.navbar-brand(href="/")
                     span
                         img.header-image(src=assetUrl("./img/logo.svg"), alt="logo", style="width: 80px; height: 80px;")
-                        span.fw-light Unicity Agent Demo
+                        span.fw-light 
         
         div.pb-4.pt-3.pt-md-4.bg-main
             div.container.px-2.px-sm-3
@@ -71,4 +74,4 @@ html(lang="en")
         }
     script(src="/js/alert-handler.js")
     script(src="/js/bootstrap.bundle.min.js")
-    
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js")

@@ -15,20 +15,20 @@ block content
                 select#competitor.form-select.form-select-sm.mb-3(name="competitor", style="width: 150px; margin: 0 auto;")
                   option(value="beginner") Minimax (easy)
                   option(value="intermediate") Constraints
-                  option(value="advanced") GPT (hard)
+                  option(value="advanced") GPT-2 (hard)
               div.d-flex.flex-column.align-items-center.gap-2
                 button#startButton.btn.btn-primary.btn-lg(style="width: 150px") Start Game
                 button#mintToken.btn.btn-primary.btn-lg(style="width: 150px") Mint Token
                 button#resetButton.btn.btn-primary.btn-lg.ms-2.d-none Play Again
               
-            div.secret-section.mb-4.mt-4
-              div.form-group
-                label.h6.mb-2(for="unicity-secret") Enter Unicity Secret:
-                input#unicity-secret.form-control.mb-2(type="text" placeholder="Enter your secret" style="width: 200px; margin: 0 auto;")
-              div#walletBalance.border.rounded.p-2.mt-3(style="width: 200px; margin: 0 auto;")
-                strong.me-2 Balance:
-                span.balance-amount 0
-                span.ms-2.badge.bg-secondary ALPHA
+            //div.secret-section.mb-4.mt-4
+            //  div.form-group
+            //    label.h6.mb-2(for="unicity-secret") Enter Unicity Secret:
+            //    input#unicity-secret.form-control.mb-2(type="text" placeholder="Enter your secret" style="width: 200px; margin: 0 auto;")
+            div#walletBalance.border.rounded.p-2.mt-3(style="width: 200px; margin: 0 auto;")
+              strong.me-2 Balance:
+              span.balance-amount 0
+              span.ms-2.badge.bg-secondary ALPHA
 
         // Game boards column - right side on large screens, below on mobile
         div.col-12.col-lg-9

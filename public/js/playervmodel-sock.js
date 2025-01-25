@@ -20,6 +20,18 @@ let pool;
 let referee_addr;
 
 
+
+function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
+let secret = generateRandomString(64);
+
 socket.addEventListener('message', (event) => {
     const data = JSON.parse(event.data);
 
@@ -38,6 +50,8 @@ socket.addEventListener('message', (event) => {
             break;
         case 'error':
             showMessage('Error', data.message);
+            gameStarted = false;
+            updateStartButtonState();
             break;
         default:
             console.warn('Unknown message type:', data.type);
@@ -156,7 +170,7 @@ document.getElementById('startButton').addEventListener('click', async function(
         clearBoard('#game-board');
         clearBoard('#ai-board');
 
-	const secret = document.getElementById("unicity-secret").value;
+	//const secret = document.getElementById("unicity-secret").value;
     const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
     const value = 10;
 
@@ -176,23 +190,24 @@ document.getElementById('startButton').addEventListener('click', async function(
 document.getElementById('mintToken').addEventListener('click', async function(e) {
     e.preventDefault();
     if (!gameStarted) {
-        this.disabled = true;
+    //    this.disabled = true;
 
-	const secret = document.getElementById("unicity-secret").value;
-        const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
-        const value = 10;
+	//const secret = document.getElementById("unicity-secret").value;
+    const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
+    const value = 10;
 	await TXF.createToken(secret, pool, tokenClass, value);
         updateBalance();
     }
 });
 
 async function updateBalance() {
-    const secret = document.getElementById("unicity-secret").value;
+    //const secret = document.getElementById("unicity-secret").value;
     const tokenClass = TXF.validateOrConvert('token_class', 'unicity_test_coin');
 
     const tokens = await TXF.findTokens(secret, pool, tokenClass, 0);
     const balance = tokens.totalValue;
-    document.getElementById("walletBalance").textContent = balance.toString() + " ALPHA";
+    document.querySelector(".balance-amount").textContent = balance.toString();
+    //document.getElementById("walletBalance").textContent = balance.toString() + " ALPHA";
 }
 
 // Function to handle the game start response from the server
@@ -211,6 +226,7 @@ function handleGameStart(data) {
     document.getElementById('startButton').classList.remove('btn-secondary');
     document.getElementById('startButton').classList.add('btn-success');
     document.getElementById('startButton').textContent = 'Game In Progress';
+    document.getElementById('mintToken').disabled = true;  // Disable the button after the game has started
 }
 
 async function handleGameOver(data) {
@@ -218,10 +234,10 @@ async function handleGameOver(data) {
     updateGameBoard('#game-board', data.guesses);
 
     if (data.jsonTokens){
-        const secret = document.getElementById("unicity-secret").value;
+        //const secret = document.getElementById("unicity-secret").value;
         await TXF.receiveTokens(secret, pool, data.jsonTokens);
-        updateBalance();
     }
+    updateBalance();
     
     if (!data.agentGamePlay) {
         // AI still calculating - don't end game yet
@@ -245,6 +261,9 @@ async function handleGameOver(data) {
     // Show the "Start Game" button to restart the game
     document.getElementById('startButton').classList.remove('d-none');
     document.getElementById('startButton').disabled = false;  // Ensure button is clickable
+
+    document.getElementById('mintToken').classList.remove('d-none');
+    document.getElementById('mintToken').disabled = false;  // Ensure button is clickable
 
     // Reset game state
     currentRow = 0;

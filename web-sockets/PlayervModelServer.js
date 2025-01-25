@@ -112,10 +112,12 @@ class PlayervModelGameServer {
             } else if (resultMessage.includes("You win")) {
                 const value = 10;
 	            await createToken(secret, pool, tokenClass, value);
-                const jsonTokens = await sendTokens(secret, pool, tokenClass, value*2, client_addr);
+                const jsonTokens = await sendTokens(secret, pool, tokenClass, 20, client_addr);
                 return jsonTokens;
  
             } else if (resultMessage.includes("Draw")) {
+                const value = 10;
+	            await createToken(secret, pool, tokenClass, value);
                 const jsonTokens = await sendTokens(secret, pool, tokenClass, 10, client_addr);
                 return jsonTokens;
                 

@@ -1,45 +1,52 @@
 extends layout
 
-block content 
-	div.alert.bg-primary.text-white.mb-3
-		div.d-flex.justify-content-between.align-items-center
-			strong.me-2 These games demonstrate different aspects of the Unicity Platform
-			button.btn.btn-link.p-0(
-				data-bs-toggle="collapse" 
-				data-bs-target="#welcomeText" 
-				aria-expanded="true"
-				aria-controls="welcomeText"
-		)
-				i.bi.bi-chevron-up.fs-5.fw-bold.text-white
+block content
+	div.container
+		div.row.justify-content-center.mb-5
+			div.col-lg-11.text-center
+				//- p.display-6.text-light Unicity: Verifiable Autonomous Agents.
 
-		div#welcomeText.collapse.show
-			ul.mb-0
-				li Combat Wordle tokenizes the leaderboard and provides proof of honest gameplay 
-				li Player v Agent shows how to mint tokens and transfer them agent to agent 
-				li Agent v Agent shows agents making micropayments and verifying state at scale
+		div.mb-5
+			div.col-lg-10.mx-auto
+				div.ratio.ratio-16x9.border.border-2.border-light.rounded.bg-white
+					embed(
+						src="/img/prezzo.pdf#toolbar=1&view=FitH"
+						type="application/pdf"
+						width="100%"
+						height="100%"
+					)
+				
+				div.mt-5.mb-5
+					// 2x2 grid of buttons
+					div.row.g-4.justify-content-center
+						div.col-md-5
+							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="/whitepaper")
+								div.card-body.text-center.p-4
+									h3.h4 Whitepaper
+									i.bi.bi-file-text.fs-1.mt-2
+						
+						div.col-md-5
+							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="/demos")
+								div.card-body.text-center.p-4
+									h3.h4 Demos
+									i.bi.bi-play-circle.fs-1.mt-2
 
-	div.container.mt-5
-		div.row.justify-content-center
-			div.col-md-6
-				div.card.shadow
-					div.card-header.bg-primary.text-white.text-center
-						h2.mb-0 Unicity Agent Games
+						div.col-md-5
+							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="https://t.me/UnicitySignerBot")
+								div.card-body.text-center.p-4
+									h3.h4 Telegram Mint Bot
+									i.bi.bi-telegram.fs-1.mt-2
+						
+						div.col-md-5
+							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="https://unicity.network")
+								div.card-body.text-center.p-4
+									h3.h4 Layer 1 Explorer
+									i.bi.bi-layers.fs-1.mt-2
 
-					div.mb-4.game-selection
-						//label.form-label.h5 Select Game
-						div.list-group
-							a(href="/speedwordlecontest").list-group-item.list-group-item-action
-								h5.mb-1 Combat Wordle
-								p.mb-1.game-desc Race against time
-
-							a(href="/spgame").list-group-item.list-group-item-action
-								h5.mb-1 Player vs Agent
-								p.mb-1.game-desc Beat the AI at Wordle
-
-							a(href="/spgame").list-group-item.list-group-item-action
-								h5.mb-1 Agent vs Agent
-								p.mb-1.game-desc Watch agents play each other
-								
-
-
-		script(src="/js/index.js")
+				// Add spacing after buttons
+				div.mt-5
+					div.col-lg-10.mx-auto
+						div.ratio.ratio-16x9.border.border-2.border-light.rounded
+							video(controls autoplay muted loop)
+								source(src="/img/Agents.webm" type="video/webm")
+								p Your browser does not support the video tag.

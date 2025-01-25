@@ -4,6 +4,7 @@ const { SingleThreadGame, AgentvAgentGame } = require('../app/AgentvAgent');
 const { validateSpace, generateRandomPoints } = require('../utils/poisson');
 const { DeathMarch } = require('../app/DeathMatch');
 const { validateOrConvert, calculatePointer, generateRandom256BitHex } = require('../public/js/tx-flow-engine/state_machine.js');
+const DM_CONFIG = require('../config/gameConfig');
 
 const router = express.Router();
 
@@ -19,6 +20,17 @@ router.get("/spgame", async (req, res) => {
 //    const refereePointer = await calculatePointer({token_class_id: tokenClass, sign_alg: 'secp256k1', hash_alg: 'sha256',
 //	refereeSecret, nonce});
     res.render("spgame");
+});
+
+
+router.get("/demos", (req, res) => {
+    debugLog('Rendering demo page');
+    res.render("demos");
+});
+
+router.get("/whitepaper", (req, res) => {
+    debugLog('Rendering whitepaper');
+    res.render("whitepaper");
 });
 
 router.get("/", (req, res) => {

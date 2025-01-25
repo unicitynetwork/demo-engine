@@ -1,0 +1,109 @@
+{
+    "token": {
+        "tokenId": "d8edb7682f64af8b92c7834db798472429b3a7403f0ac11aa07512cc1fd57fcf",
+        "tokenClass": "a36b4946d9173e695d8b776e19d4da0ebad3983ff0bcd207763d5737e478b26b",
+        "tokenValue": "0",
+        "mintProofs": {
+            "path": [
+                {
+                    "leaf": true,
+                    "payload": "8619d1950e4b8eda5f75ed1ffd0196913a70ff5a911b40559f52e08bc1680dec",
+                    "authenticator": {
+                        "state": "bb42f7865b4f1cf005bc3a8577bbaa0ed1f6e7e62befe41e4b145bd4b1a7d66b",
+                        "pubkey": "043ad013f4c2d4a89fefd132c8833854b7f5b244da921b15ffbd3d3b55a8530194c8653bbe499846fb754e37e1184952b5ec820e38c8cfc2bacbf945926f04359b",
+                        "signature": "3046022100d91486119151f30d470d8a42c315f987f99ca30d703d3e38a0384cf33260e30b0221008dcb4ad29cee6a4c4d121241514267b202ea4b5ea1d4abd92e90924be255abe2",
+                        "sign_alg": "secp256k1",
+                        "hash_alg": "sha256"
+                    }
+                }
+            ]
+        },
+        "mintRequest": {
+            "dest_ref": "point158a36ca611c96c002a8f34da31b78d512d036134f7eab0d549ef8fe5897f766"
+        },
+        "mintSalt": "a69717f0bc54d61326ee297c6230d195a67b9d3a3cbd1d3e5a3e5890d4121dfa",
+        "genesis": {
+            "challenge": {
+                "tokenClass": "a36b4946d9173e695d8b776e19d4da0ebad3983ff0bcd207763d5737e478b26b",
+                "tokenId": "d8edb7682f64af8b92c7834db798472429b3a7403f0ac11aa07512cc1fd57fcf",
+                "sign_alg": "secp256k1",
+                "hash_alg": "sha256",
+                "pubkey": "04b672861254e0159746ecc45bf1c80ea4d51aa7abe6b305b22d56cde6ff7114928f83a612073af9b9dcd70c2125f28308a814b4881c3f4cf3118e09aea930c305",
+                "nonce": "9e59d10e5ddbd719e63eb490b95ccb3a1383c06ecc972680a99bdc8bf4169dd4"
+            }
+        },
+        "transitions": [
+            {
+                "tokenId": "d8edb7682f64af8b92c7834db798472429b3a7403f0ac11aa07512cc1fd57fcf",
+                "source": {
+                    "challenge": {
+                        "tokenClass": "a36b4946d9173e695d8b776e19d4da0ebad3983ff0bcd207763d5737e478b26b",
+                        "tokenId": "d8edb7682f64af8b92c7834db798472429b3a7403f0ac11aa07512cc1fd57fcf",
+                        "sign_alg": "secp256k1",
+                        "hash_alg": "sha256",
+                        "pubkey": "04b672861254e0159746ecc45bf1c80ea4d51aa7abe6b305b22d56cde6ff7114928f83a612073af9b9dcd70c2125f28308a814b4881c3f4cf3118e09aea930c305",
+                        "nonce": "9e59d10e5ddbd719e63eb490b95ccb3a1383c06ecc972680a99bdc8bf4169dd4"
+                    }
+                },
+                "input": {
+                    "path": [
+                        {
+                            "leaf": true,
+                            "payload": "ed6a7efbdb478cc4b0c1aced7abcfc9ccf49fb27015f528486ac1c5a52d41711",
+                            "authenticator": {
+                                "state": "4ac8d1531565cb86e0ee36278bb72722530428bd71ee1f2e86339a28be341c8b",
+                                "pubkey": "04b672861254e0159746ecc45bf1c80ea4d51aa7abe6b305b22d56cde6ff7114928f83a612073af9b9dcd70c2125f28308a814b4881c3f4cf3118e09aea930c305",
+                                "signature": "3046022100cd95ffe0b86814b8926a6e9b6ac17324bec3f49eaab7d720ba10a46535da6988022100edeca10e1d6767f0937c35d2435afaf6673d106b039dffbdea33e5181221c97e",
+                                "sign_alg": "secp256k1",
+                                "hash_alg": "sha256"
+                            }
+                        }
+                    ],
+                    "dest_ref": "pub04587cde793f3dd3a0a6b2c3d7729e715186de95e6ff296b32113d3df6a3570161721703a238b3c152b7b4c225a41a74a8634f247ff281d13f33fa7b91655887b4",
+                    "salt": "8b1b0eecf969d6b228fc11f688aa5e4d07103076e6618690247623e98880aad6",
+                    "dataHash": "9794d8f92fe8b72260ef5e0c9f84f369f90b6896"
+                },
+                "destination": {
+                    "challenge": {
+                        "tokenClass": "a36b4946d9173e695d8b776e19d4da0ebad3983ff0bcd207763d5737e478b26b",
+                        "tokenId": "d8edb7682f64af8b92c7834db798472429b3a7403f0ac11aa07512cc1fd57fcf",
+                        "sign_alg": "secp256k1",
+                        "hash_alg": "sha256",
+                        "pubkey": "04587cde793f3dd3a0a6b2c3d7729e715186de95e6ff296b32113d3df6a3570161721703a238b3c152b7b4c225a41a74a8634f247ff281d13f33fa7b91655887b4",
+                        "nonce": "b4da2c0e7b26b28dc9ac2d205f7bcc5f5e27bd72e8513731b49130d2a92fc8e4"
+                    },
+                    "aux": {
+                        "salt_sig": "3045022055eae82716d9246c231c4cf8bae26dc6bd0d47f3894fc49bc83fa5f8cb85ab8d022100a9fb04abc5ec9f240829e7888386310c10361b4c8778cad406a6081c88e0d2f3"
+                    },
+                    "data": [
+                        {
+                            "playerName": "VR7",
+                            "gameTime": "450.00",
+                            "timestamp": "12/30/2024"
+                        }
+                    ]
+                }
+            }
+        ],
+        "state": {
+            "challenge": {
+                "tokenClass": "a36b4946d9173e695d8b776e19d4da0ebad3983ff0bcd207763d5737e478b26b",
+                "tokenId": "d8edb7682f64af8b92c7834db798472429b3a7403f0ac11aa07512cc1fd57fcf",
+                "sign_alg": "secp256k1",
+                "hash_alg": "sha256",
+                "pubkey": "04587cde793f3dd3a0a6b2c3d7729e715186de95e6ff296b32113d3df6a3570161721703a238b3c152b7b4c225a41a74a8634f247ff281d13f33fa7b91655887b4",
+                "nonce": "b4da2c0e7b26b28dc9ac2d205f7bcc5f5e27bd72e8513731b49130d2a92fc8e4"
+            },
+            "aux": {
+                "salt_sig": "3045022055eae82716d9246c231c4cf8bae26dc6bd0d47f3894fc49bc83fa5f8cb85ab8d022100a9fb04abc5ec9f240829e7888386310c10361b4c8778cad406a6081c88e0d2f3"
+            },
+            "data": [
+                {
+                    "playerName": "VR7",
+                    "gameTime": "450.00",
+                    "timestamp": "12/30/2024"
+                }
+            ]
+        }
+    }
+}

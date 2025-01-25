@@ -21,6 +21,7 @@ class DeathMatchServer {
         // Initialize new game for this session
         const game = new DeathMatch(DM_CONFIG.NO_AGENTS); 
         this.games.set(sessionId, game);
+
     }
 
     removeConnection(sessionId) {
