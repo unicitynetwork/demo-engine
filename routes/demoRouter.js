@@ -3,7 +3,7 @@ const { router: debugLog, error: debugErrorLog } = require('../utils/logger');
 const { SingleThreadGame, AgentvAgentGame } = require('../app/AgentvAgent');
 const { validateSpace, generateRandomPoints } = require('../utils/poisson');
 const { DeathMarch } = require('../app/DeathMatch');
-const { validateOrConvert, calculatePointer, generateRandom256BitHex } = require('../public/js/tx-flow-engine/state_machine.js');
+const { validateOrConvert, calculatePointer, generateRandom256BitHex } = require('@unicitylabs/tx-flow-engine');
 const DM_CONFIG = require('../config/gameConfig');
 
 const router = express.Router();
@@ -41,6 +41,11 @@ router.get("/", (req, res) => {
 router.get("/speedwordlecontest", (req, res) => {
     debugLog('Loading contest page');
     res.render("speedwordlecontest");
+});
+
+router.get("/unidex", (req, res) => {
+    debugLog('Loading contest page');
+    res.render("comingsoon");
 });
 
 async function runGame(game, numRounds) {

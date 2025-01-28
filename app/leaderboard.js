@@ -1,7 +1,7 @@
 // leaderboard.js
 const fs = require('fs').promises
 const path = require('path')
-const {exportFlow, importFlow, generateRandom256BitHex, defaultGateway, getHashOf, getHTTPTransport, getTokenStatus, importTx, createTx } = require('../public/js/tx-flow-engine/state_machine.js');
+const {exportFlow, importFlow, generateRandom256BitHex, defaultGateway, getHashOf, getHTTPTransport, getTokenStatus, importTx, createTx } = require('@unicitylabs/tx-flow-engine');
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('../utils/logger');
 
 
@@ -51,9 +51,9 @@ class LeaderboardManager {
         this.leaderboard = this.leaderboard.slice(0, this.maxEntries)
 
         const token = await importFlow(this.tokenJson, undefined, undefined, undefined)
-        const tx = await createTx(token, process.env.UNICITY_LB_PUBKEY, generateRandom256BitHex(), process.env.UNCITY_LB_SECRET, getHTTPTransport(defaultGateway()), getHashOf(JSON.stringify(this.leaderboard)))
+        const tx = await createTx(token, process.env.UNICITY_LB_PUBKEY, generateRandom256BitHex(), process.env.UNICITY_LB_SECRET, getHTTPTransport(defaultGateway()), getHashOf(JSON.stringify(this.leaderboard)))
         const updatedFlow = exportFlow(token, tx, true)
-        const updatedToken = await importFlow(updatedFlow, process.env.UNCITY_LB_SECRET, undefined, JSON.stringify(this.leaderboard))
+        const updatedToken = await importFlow(updatedFlow, process.env.UNICITY_LB_SECRET, undefined, JSON.stringify(this.leaderboard))
         this.tokenJson = exportFlow(updatedToken, undefined, true)
         
         await this.saveLeaderboard()

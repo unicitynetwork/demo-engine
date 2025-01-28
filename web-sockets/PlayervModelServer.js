@@ -1,5 +1,5 @@
 const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('../utils/logger');
-const { getTokenPool, createToken, findTokens, sendTokens, receiveTokens, validateOrConvert } = require('../public/js/tx-flow-engine/state_machine.js');
+const { getTokenPool, createToken, findTokens, sendTokens, receiveTokens, validateOrConvert } = require('@unicitylabs/tx-flow-engine');
 const PlayervModelGame = require("../app/PlayervModelGame");
 const secret = 'refereesecret';
 const tokenClass = validateOrConvert('token_class', 'unicity_test_coin');
