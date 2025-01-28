@@ -9,12 +9,14 @@ block content
 		div.mb-5
 			div.col-lg-10.mx-auto
 				div.ratio.ratio-16x9.border.border-2.border-light.rounded.bg-white
-					embed(
+					iframe(
 						src="/img/unicity.pdf#toolbar=1&view=FitH"
 						type="application/pdf"
 						width="100%"
 						height="100%"
 					)
+				div.text-center.mt-3
+					a.btn.btn-primary(href="/img/unicity.pdf", download="unicity.pdf") Download PDF
 				
 				div.mt-5.mb-5
 					// 2x2 grid of buttons
