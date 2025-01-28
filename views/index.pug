@@ -1,6 +1,5 @@
 extends layout
 
-
 block content
 	div.container
 		div.row.justify-content-center.mb-5
@@ -9,14 +8,17 @@ block content
 
 		div.mb-5
 			div.col-lg-10.mx-auto
-				div.ratio.ratio-16x9.border.border-2.border-light.rounded.bg-white
+				// PDF Viewer (Visible on Desktop/Tablets)
+				div.ratio.ratio-16x9.border.border-2.border-light.rounded.bg-white.d-none.d-md-block
 					iframe(
-						src="/img/unicity.pdf#toolbar=1&scrollbar=1&navpanes=1"
+						src="/img/unicity.pdf#toolbar=1&scrollbar=1&navpanes=0"
 						type="application/pdf"
 						style="width: 100%; height: 100%; border: none;"
 					)
-				div.text-center.mt-3
-					a.btn.btn-primary(href="/img/unicity.pdf", download="unicity.pdf") Download PDF
+				// Image Fallback (Visible on Mobile Devices)
+				div.d-block.d-md-none.text-center
+					img(src="/img/unicity-preview.png" alt="Unicity PDF Preview" class="img-fluid rounded")
+					a.btn.btn-primary.mt-3(href="/img/unicity.pdf", download="unicity.pdf") Download Full PDF
 				
 				div.mt-5.mb-5
 					// 2x2 grid of buttons
