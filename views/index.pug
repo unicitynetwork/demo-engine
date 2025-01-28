@@ -1,19 +1,19 @@
 extends layout
 
+
 block content
 	div.container
 		div.row.justify-content-center.mb-5
 			div.col-lg-11.text-center
-				//- p.display-6.text-light Unicity: Verifiable Autonomous Agents.
+				//- p.display-6.text-light Unicity: Off-Chain Crypto Agents.
 
 		div.mb-5
 			div.col-lg-10.mx-auto
 				div.ratio.ratio-16x9.border.border-2.border-light.rounded.bg-white
 					iframe(
-						src="/img/unicity.pdf#toolbar=1&view=FitH"
+						src="/img/unicity.pdf#toolbar=1&scrollbar=1&navpanes=1"
 						type="application/pdf"
-						width="100%"
-						height="100%"
+						style="width: 100%; height: 100%; border: none;"
 					)
 				div.text-center.mt-3
 					a.btn.btn-primary(href="/img/unicity.pdf", download="unicity.pdf") Download PDF
