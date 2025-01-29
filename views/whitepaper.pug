@@ -1,19 +1,17 @@
 extends layout
 
 block content
-	div.container
-		div.row.justify-content-center.mb-5
-			div.col-lg-11.text-center
-
-
-		div.mb-5
-			div.col-lg-10.mx-auto
-				div.ratio.ratio-16x9.border.border-2.border-light.rounded.bg-white(style="height: 800px;")
-					embed(
-						src="/img/whitepaper.pdf#toolbar=1&view=FitH"
-						type="application/pdf"
-						width="100%"
-						height="100%"
-			)
-
+	div.container-fluid.mb-5
+	div.row
+		div.col-12.col-lg-10.mx-auto
+			div.ratio.ratio-16x9.border.border-2.border-light.rounded.bg-white
+				object(
+					data="/img/whitepaper.pdf#toolbar=1&view=FitH"
+					type="application/pdf"
+					width="100%"
+					height="100%"
+				)
+					//- Fallback for devices that can't display PDFs
+					p Your device doesn't support embedded PDFs. 
+					a(href="/img/whitepaper.pdf" target="_blank") Click here to download the PDF
 				
