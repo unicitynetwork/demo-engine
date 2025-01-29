@@ -1,6 +1,6 @@
 const DM_CONFIG = {
     // Game parameters
-    NO_AGENTS: 5000,
+    NO_AGENTS: 500,
     NO_ROUNDS: 100,
     INITIAL_BALANCE: 100,
     PAYMENT_AMOUNT: 1,     // Amount transferred each round
@@ -16,14 +16,6 @@ const DM_CONFIG = {
     MIN_AGENT_SPACING: 10   // Minimum pixels between agents
 };
 
-const WS_CONFIG = {
-    development: {
-        wsUrl: 'ws://localhost:3000/demos'
-    },
-    production: {
-        wsUrl: 'wss://unicity-labs.com/demos'
-    }
+module.exports = {
+    DM_CONFIG,
 };
-
-export default config[process.env.NODE_ENV || 'development'];
-module.exports = DM_CONFIG;

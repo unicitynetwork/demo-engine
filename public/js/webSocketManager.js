@@ -1,34 +1,64 @@
 // websocket-manager.js
-const { app: debugLog, error: debugErrorLog, game: debugGameLog } = require('../utils/logger');
 
 class WebSocketManager {
-    connect() {
+
+    constructor() {
+        this.socket = null;
         const host = window.location.hostname;
         const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-        const port = process.env.PORT || 3000;
-        const wsPath = "/demos";  
+        const port = host === 'localhost' ? ':3000' : '';
+        
+        this.baseUrl = `${protocol}//${host}:${port}/demos`;
+    }
 
-        const wsUrl = `${protocol}//${host}:${port}${wsPath}`;
+    showMessage(title, message) {
+        const modalElement = document.getElementById('messageModal');
+        if (!modalElement) {
+            console.error('Modal element not found');
+            return;
+        }
 
-        this.socket = new WebSocket(wsUrl);
-
-        debugLog('Connecting to WebSocket:', wsUrl);
-
-        // Move the existing event listeners here
-        this.socket.addEventListener('open', () => {
-            console.log('Connected to WebSocket server');
+        const modal = new bootstrap.Modal(modalElement, {
+            keyboard: true,
+            backdrop: 'static'
         });
 
-        this.socket.addEventListener('error', () => {
-            console.error('WebSocket error:', error);
-            showMessage('Error', 'Connection to the server lost. Please refresh the page.');
-        });
+        modalElement.querySelector('.modal-title').textContent = title;
+        modalElement.querySelector('.modal-body').innerHTML = message;
 
-        this.socket.addEventListener('close', () => {
-            console.log('WebSocket connection closed');
-            showMessage('Error', 'Connection closed. Please try again later.');
-        });
+        modal.show();
+    }
 
-        return this.socket;
+
+    connect() {
+        try {
+
+            this.socket = new WebSocket(this.baseUrl);
+
+            console.log('Attempting connection to:', this.baseUrl);
+
+            this.socket.addEventListener('open', () => {
+                console.log('Connected to WebSocket server');
+            });
+
+            this.socket.addEventListener('error', (error) => {
+                console.error('WebSocket error:', error);
+                this.showMessage('Error', 'Connection to the server lost. Please refresh the page.');
+            });
+
+            this.socket.addEventListener('close', () => {
+                console.log('WebSocket connection closed');
+                showMessage('Error', 'Connection closed. Please try again later.');
+            });
+
+            return this.socket;
+        } catch (error) {
+            console.error('WebSocket connection error:', error);
+            this.showMessage('Error', 'Failed to connect to server.');
+            return null;
+        }
     }
 }
+
+
+window.WebSocketManager = WebSocketManager;
