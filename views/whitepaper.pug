@@ -1,17 +1,20 @@
 extends layout
 
-block content
-	div.container-fluid.mb-5
-	div.row
-		div.col-12.col-lg-10.mx-auto
-			div.ratio.ratio-16x9.border.border-2.border-light.rounded.bg-white
-				object(
-					data="/img/whitepaper.pdf#toolbar=1&view=FitH"
-					type="application/pdf"
-					width="100%"
-					height="100%"
-				)
-					//- Fallback for devices that can't display PDFs
-					p Your device doesn't support embedded PDFs. 
-					a(href="/img/whitepaper.pdf" target="_blank") Click here to download the PDF
-				
+div.container-fluid.mb-5
+    div.row
+        div.col-12.col-lg-10.mx-auto
+            div.ratio.ratio-16x9.border.border-2.rounded.bg-dark.p-4.text-center.d-flex.flex-column.justify-content-center
+                object(
+                    data="/img/whitepaper.pdf#toolbar=1&view=FitH"
+                    type="application/pdf"
+                    width="100%"
+                    height="100%"
+                )
+                    //- Styled fallback content
+                    div.text-white.mb-4
+                        p.h5.mb-4 Your device doesn't support embedded PDFs
+                        a.btn.btn-primary.px-4.py-2(
+                            href="/img/whitepaper.pdf" 
+                            target="_blank"
+                            download
+                        ) Download PDF

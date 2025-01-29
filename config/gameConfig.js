@@ -16,4 +16,14 @@ const DM_CONFIG = {
     MIN_AGENT_SPACING: 10   // Minimum pixels between agents
 };
 
+const WS_CONFIG = {
+    development: {
+        wsUrl: 'ws://localhost:3000/demos'
+    },
+    production: {
+        wsUrl: 'wss://unicity-labs.com/demos'
+    }
+};
+
+export default config[process.env.NODE_ENV || 'development'];
 module.exports = DM_CONFIG;
