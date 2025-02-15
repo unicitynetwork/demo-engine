@@ -1,63 +1,8 @@
 extends layout
 
 block content
-	div.container
-		div.row.justify-content-center.mb-5
-			div.col-lg-11.text-center
-				//- p.display-6.text-light Unicity: Off-Chain Crypto Agents.
-
-		div.mb-5
-			div.col-lg-10.mx-auto
-				div.col-lg-10.mx-auto
-					img(src="/img/unicity-preview.png" alt="Unicity PDF Preview" class="img-fluid rounded")
-					div.d-flex.justify-content-center
-						a.btn.btn-primary.me-2(href="/img/unicity.pdf" target="_blank") Open Full Presentation
-				
-				div.mt-5.mb-5
-					// 2x2 grid of buttons
-					div.row.g-4.justify-content-center
-						div.col-md-5
-							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="/whitepaper")
-								div.card-body.text-center.p-4
-									h3.h4 Whitepaper
-									i.bi.bi-file-text.fs-1.mt-2
-						
-						//div.col-md-5
-							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="https://unicitynetwork.github.io/tx-flow-engine/")
-								div.card-body.text-center.p-4
-									h3.h4 Token Gui
-									i.bi.bi-play-circle.fs-1.mt-2
-
-						//div.col-md-5
-							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="https://t.me/UnicitySignerBot")
-								div.card-body.text-center.p-4
-									h3.h4 Telegram Mint Bot
-									i.bi.bi-telegram.fs-1.mt-2
-						
-						//div.col-md-5
-							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="https://unicity.network")
-								div.card-body.text-center.p-4
-									h3.h4 L1 Block Explorer
-									i.bi.bi-layers.fs-1.mt-2
-
-						// Discord Button
-						//div.col-md-5
-							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="https://discord.gg/353kBJj7")
-								div.card-body.text-center.p-4
-									h3.h4 Discord
-									i.bi.bi-discord.fs-1.mt-2
-
-						// GitHub Button
-						div.col-md-5
-							a.card.bg-header-footer.text-light.h-100.text-decoration-none(href="https://github.com/unicitynetwork")
-								div.card-body.text-center.p-4
-									h3.h4 GitHub
-									i.bi.bi-github.fs-1.mt-2
-
-				// Add spacing after buttons
-				//div.mt-5
-					div.col-lg-10.mx-auto
-						div.ratio.ratio-16x9.border.border-2.border-light.rounded
-							video(controls autoplay muted loop)
-								source(src="/img/Agents.webm" type="video/webm")
-								p Your browser does not support the video tag.
+    div.container-fluid.p-0.d-flex.justify-content-center.align-items-center
+        div.w-75.position-relative(style="height: calc(100vh - 200px);")
+            video.w-100.h-100.object-fit-contain(autoplay muted loop playsinline webkit-playsinline)
+                source(src="/img/off_chain_agents.mp4" type="video/mp4")
+                p Your browser does not support the video tag.

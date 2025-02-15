@@ -43,6 +43,11 @@ router.get("/speedwordlecontest", (req, res) => {
     res.render("speedwordlecontest");
 });
 
+router.get("/uniroad", (req, res) => {
+    debugLog('Loading Uniroad');
+    res.render("uniroad");
+});
+
 router.get("/unidex", (req, res) => {
     debugLog('Loading contest page');
     res.render("comingsoon");
