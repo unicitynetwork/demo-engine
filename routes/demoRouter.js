@@ -38,6 +38,11 @@ router.get("/", (req, res) => {
     res.render("index");
 });
 
+router.get("/unichat", (req, res) => {
+    debugLog('Loading Unichat P2P Group Chat');
+    res.render("unichat");
+});
+
 router.get("/speedwordlecontest", (req, res) => {
     debugLog('Loading contest page');
     res.render("speedwordlecontest");
@@ -48,9 +53,84 @@ router.get("/uniroad", (req, res) => {
     res.render("uniroad");
 });
 
+router.get("/soccerbet", (req, res) => {
+    debugLog('Loading Soccer Betting page');
+    res.render("soccerbet");
+});
+
+router.get("/esports", (req, res) => {
+    debugLog('Loading eSports Platform page');
+    res.render("esports");
+});
+
+router.get("/cricket", (req, res) => {
+    debugLog('Loading Cricket Betting page');
+    res.render("cricket");
+});
+
+router.get("/dex", (req, res) => {
+    debugLog('Loading Decentralized Exchange page');
+    res.render("dex");
+});
+
+router.get("/clob", (req, res) => {
+    debugLog('Loading Central Limit Order Book page');
+    res.render("clob");
+});
+
+router.get("/spacemarkets", (req, res) => {
+    debugLog('Loading Satellite Spectrum Auction page');
+    res.render("spacemarkets");
+});
+
+router.get("/medicalresearch", (req, res) => {
+    debugLog('Loading Medical Research page');
+    res.render("medicalresearch");
+});
+
+router.get("/poker", (req, res) => {
+    debugLog('Loading Poker page');
+    res.render("poker");
+});
+
+router.get("/building-permit", (req, res) => {
+    debugLog('Loading Building Permit page');
+    res.render("building-permit");
+});
+
 router.get("/unidex", (req, res) => {
     debugLog('Loading contest page');
     res.render("comingsoon");
+});
+
+router.get("/dating", (req, res) => {
+    debugLog('Loading dating page');
+    res.render("dating");
+});
+
+router.get("/sendmoneyhome", (req, res) => {
+    debugLog('Loading Send Money Home page');
+    res.render("sendmoneyhome");
+});
+
+router.get("/flightagent", (req, res) => {
+    debugLog('Loading Flight Agent page');
+    res.render("flightagent");
+});
+
+router.get("/unisign", (req, res) => {
+    debugLog('Loading UniSign Demo page');
+    res.render("unisign");
+});
+
+router.get("/contractagent", (req, res) => {
+    debugLog('Loading ContractAgent Demo page');
+    res.render("contractagent");
+});
+
+router.get("/unichat", (req, res) => {
+    debugLog('Loading Unichat P2P Group Chat');
+    res.render("unichat");
 });
 
 async function runGame(game, numRounds) {

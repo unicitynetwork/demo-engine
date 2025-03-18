@@ -185,3 +185,102 @@
     animation: shake 0.5s;
 }
 
+/* Unichat styles */
+.avatar img {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat-messages {
+    height: calc(100vh - 240px);
+    overflow-y: auto;
+}
+
+.message-own .message-content {
+    margin-left: auto;
+    max-width: 80%;
+}
+
+.message .message-content {
+    max-width: 80%;
+}
+
+#groupsList, #usersList {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.group-item.active {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.group-item:hover, .user-item:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.05);
+    cursor: pointer;
+}
+
+.reaction-btn {
+    border-radius: 20px;
+    padding: 0 8px;
+}
+
+.reaction-btn:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.message-system {
+    font-style: italic;
+    color: #6c757d;
+    text-align: center;
+}
+
+/* Avatar placeholder since we don't have actual images */
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #6c757d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Custom user avatars */
+.avatar-vladimir {
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+}
+
+.avatar-svetlana {
+    background-color: #fd7e14;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+}
+
+.avatar-tatiana {
+    background-color: #0dcaf0;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+}
+

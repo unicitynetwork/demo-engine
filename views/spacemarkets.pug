@@ -1,0 +1,872 @@
+extends layout
+
+block content
+  div.alert.bg-primary.text-white.mb-3
+    div.d-flex.justify-content-between.align-items-center
+      strong.me-2 Satellite Spectrum Auction
+      button.btn.btn-link.p-0(
+        data-bs-toggle="collapse" 
+        data-bs-target="#welcomeText" 
+        aria-expanded="true"
+        aria-controls="welcomeText"
+      )
+        i.bi.bi-chevron-up.fs-5.fw-bold.text-white
+
+    div#welcomeText.collapse.show
+      p.mb-0 This demo showcases how the Unicity Platform enables transparent and efficient satellite spectrum auctions:
+      ul.mb-0
+        li Transparent bidding process with verifiable outcomes
+        li Decentralized settlement ensures fair competition
+        li Regulatory compliance built into the smart contracts
+        li Geographic allocation with orbital slot visualization
+        li Frequency band auction with adjustable price discovery
+
+  div.container-fluid.mt-4
+    div.row
+      //- Auction interface: left panel
+      div.col-lg-9
+        div.row
+          //- Spectrum Map and Auction Status
+          div.col-lg-8
+            //- Orbital Slot Visualization
+            div.card.bg-dark.border-primary.shadow.mb-4
+              div.card-header.bg-primary.text-white.d-flex.justify-content-between.align-items-center
+                h4.mb-0 Orbital Slots & Frequency Bands
+                div.btn-group.btn-group-sm
+                  button.btn.btn-primary.active.text-white GEO
+                  button.btn.btn-outline-primary.text-white MEO
+                  button.btn.btn-outline-primary.text-white LEO
+                  button.btn.btn-outline-primary.text-white Global
+              div.card-body.p-1
+                div.chart-container.position-relative.bg-dark.rounded(style="height: 280px; overflow: hidden;")
+                  //- SVG visualization of orbital slots
+                  svg.rounded#orbital-map(viewBox="0 0 500 280" style="width: 100%; height: 100%;")
+                    //- Background - deep space
+                    rect(width="500" height="280" fill="#0a0a20")
+                    
+                    //- Earth in center
+                    circle(cx="250" cy="140" r="50" fill="#1a63a0")
+                    
+                    //- GEO orbital ring
+                    circle(cx="250" cy="140" r="150" fill="none" stroke="#333" stroke-width="1" stroke-dasharray="4,4")
+                    
+                    //- Orbital slots markings - 12 positions (30 degrees each)
+                    - for(let i = 0; i < 12; i++)
+                      - const angle = i * 30 * Math.PI / 180
+                      - const x = 250 + 150 * Math.cos(angle)
+                      - const y = 140 + 150 * Math.sin(angle)
+                      circle(cx=x cy=y r="3" fill="#666")
+                      text(x=x+8 y=y+4 fill="#888" font-size="10px") #{i*30}°E
+                    
+                    //- Highlight active auction slots
+                    - const activeSlots = [{angle: 60, status: 'active'}, {angle: 105, status: 'pending'}, {angle: 180, status: 'completed'}, {angle: 270, status: 'active'}]
+                    - activeSlots.forEach(slot => {
+                      - const angle = slot.angle * Math.PI / 180
+                      - const x = 250 + 150 * Math.cos(angle)
+                      - const y = 140 + 150 * Math.sin(angle)
+                      - const color = slot.status === 'active' ? "#2563eb" : (slot.status === 'pending' ? "#f59e0b" : "#10b981")
+                      circle(cx=x cy=y r="8" fill=color)
+                      - if (slot.status === 'active')
+                        circle(cx=x cy=y r="12" fill="none" stroke=color stroke-width="2")
+                        animate(attributeName="r" from="8" to="14" dur="2s" repeatCount="indefinite")
+                    - })
+                    
+                    //- Satellites in orbit
+                    - const satellites = [{angle: 45, size: 4}, {angle: 120, size: 5}, {angle: 200, size: 4}, {angle: 280, size: 6}]
+                    - satellites.forEach(sat => {
+                      - const angle = sat.angle * Math.PI / 180
+                      - const x = 250 + 150 * Math.cos(angle)
+                      - const y = 140 + 150 * Math.sin(angle)
+                      polygon(points=`${x-sat.size},${y} ${x},${y-sat.size} ${x+sat.size},${y} ${x},${y+sat.size}` fill="#f0f0f0")
+                    - })
+                    
+                    //- Legend
+                    rect(x="370" y="20" width="120" height="80" fill="rgba(0,0,0,0.6)" rx="5")
+                    text(x="380" y="40" fill="#fff" font-size="10px") Active Auction
+                    circle(cx="425" cy="36" r="6" fill="#2563eb")
+                    text(x="380" y="60" fill="#fff" font-size="10px") Pending
+                    circle(cx="425" cy="56" r="6" fill="#f59e0b")
+                    text(x="380" y="80" fill="#fff" font-size="10px") Completed
+                    circle(cx="425" cy="76" r="6" fill="#10b981")
+            
+            //- Current Auctions
+            div.card.bg-dark.border-primary.shadow.mb-4
+              div.card-header.bg-primary.text-white
+                h4.mb-0 Current Auctions
+              div.card-body.p-0
+                table.table.table-dark.table-hover.mb-0
+                  thead
+                    tr
+                      th Slot
+                      th Frequency
+                      th Current Bid
+                      th Bidders
+                      th Time Left
+                      th Action
+                  tbody
+                    tr.auction-row.active
+                      td 
+                        strong 60°E (GEO)
+                        div.small.text-muted North America
+                      td C-Band (4-8 GHz)
+                      td 1,250,000 USDT
+                      td 4
+                      td 
+                        span.badge.bg-warning 2h 15m
+                      td
+                        button.btn.btn-sm.btn-outline-primary Place Bid
+                    tr.auction-row
+                      td 
+                        strong 270°E (GEO)
+                        div.small.text-muted Asia-Pacific
+                      td Ku-Band (12-18 GHz)
+                      td 1,750,000 USDT
+                      td 6
+                      td 
+                        span.badge.bg-danger 45m 20s
+                      td
+                        button.btn.btn-sm.btn-outline-primary Place Bid
+                    tr.auction-row
+                      td 
+                        strong 75°E (LEO)
+                        div.small.text-muted Global Coverage
+                      td Ka-Band (26-40 GHz)
+                      td 950,000 USDT
+                      td 3
+                      td 
+                        span.badge.bg-warning 4h 10m
+                      td
+                        button.btn.btn-sm.btn-outline-primary Place Bid
+                    tr.auction-row
+                      td 
+                        strong 120°E (MEO)
+                        div.small.text-muted South America
+                      td X-Band (8-12 GHz)
+                      td 850,000 USDT
+                      td 2
+                      td 
+                        span.badge.bg-warning 5h 30m
+                      td
+                        button.btn.btn-sm.btn-outline-primary Place Bid
+                    tr.auction-row
+                      td 
+                        strong 320°E (GEO)
+                        div.small.text-muted Europe
+                      td V-Band (40-75 GHz)
+                      td 2,150,000 USDT
+                      td 8
+                      td 
+                        span.badge.bg-danger 35m 12s
+                      td
+                        button.btn.btn-sm.btn-outline-primary Place Bid
+          
+          //- Bid History and Your Licenses
+          div.col-lg-4
+            //- Your Balance Card
+            div.card.bg-dark.border-primary.shadow.mb-4
+              div.card-header.bg-primary.text-white
+                h4.mb-0 Your Balance
+              div.card-body
+                div.wallet-balance
+                  div.d-flex.justify-content-between.mb-2
+                    span.text-light Available Balance
+                    span.text-light 2,500,000 USDT
+                  div.d-flex.justify-content-between.mb-2
+                    span.text-light Staked in Auctions
+                    span.text-light 750,000 USDT
+                  div.d-flex.justify-content-between.mb-2
+                    span.text-light Total Assets
+                    span.text-light 3,250,000 USDT
+            
+            //- Your Active Bids
+            div.card.bg-dark.border-primary.shadow.mb-4
+              div.card-header.bg-primary.text-white
+                h4.mb-0 Your Active Bids
+              div.card-body.p-0
+                table.table.table-dark.table-hover.mb-0
+                  thead
+                    tr
+                      th Slot
+                      th Your Bid
+                      th Status
+                  tbody
+                    tr
+                      td 60°E (GEO)
+                      td 1,250,000 USDT
+                      td
+                        span.badge.bg-success Highest
+                    tr
+                      td 320°E (GEO)
+                      td 2,000,000 USDT
+                      td
+                        span.badge.bg-danger Outbid
+            
+            //- Your Spectrum Licenses
+            div.card.bg-dark.border-primary.shadow
+              div.card-header.bg-primary.text-white
+                h4.mb-0 Your Spectrum Licenses
+              div.card-body.p-0
+                table.table.table-dark.table-hover.mb-0
+                  thead
+                    tr
+                      th License ID
+                      th Details
+                      th Expires
+                  tbody
+                    tr
+                      td 
+                        div.small SPC-2025-082
+                      td 
+                        div 180°E (GEO)
+                        div.small.text-muted Ku-Band (12-18 GHz)
+                      td 2035-06-15
+                    tr
+                      td 
+                        div.small SPC-2024-156
+                      td 
+                        div 105°E (MEO)
+                        div.small.text-muted Ka-Band (26-40 GHz)
+                      td 2034-11-30
+        
+        //- Bidding Interface
+        div.row.mt-2
+          div.col-12
+            div.card.bg-dark.border-primary.shadow
+              div.card-header.bg-primary.text-white
+                h4.mb-0 Place Bid: 60°E (GEO) - C-Band (4-8 GHz)
+              
+              div.card-body
+                div.row
+                  //- Auction Info
+                  div.col-md-6
+                    h5.mb-3 Auction Details
+                    div.mb-3
+                      label.form-label.mb-2 License Information
+                      div.card.bg-secondary.p-2.mb-2
+                        ul.list-unstyled.mb-0
+                          li 
+                            strong Geographic Coverage: 
+                            span North America
+                          li 
+                            strong Orbital Type: 
+                            span Geostationary (GEO)
+                          li 
+                            strong Frequency Range: 
+                            span 4-8 GHz (C-Band)
+                          li 
+                            strong Bandwidth: 
+                            span 500 MHz
+                          li 
+                            strong License Duration: 
+                            span 10 years
+                          li 
+                            strong Regulatory Compliance: 
+                            span ITU Filing Required
+                    
+                    div.mb-3
+                      label.form-label.mb-2 Auction Status
+                      div.progress.mb-2
+                        div.progress-bar.bg-primary.progress-bar-striped.progress-bar-animated(
+                          role="progressbar" 
+                          style="width: 70%"
+                          aria-valuenow="70" 
+                          aria-valuemin="0" 
+                          aria-valuemax="100"
+                        ) 70% Complete
+                      div.d-flex.justify-content-between.small
+                        span Starting: 950,000 USDT
+                        span Reserve: 1,500,000 USDT
+                  
+                  //- Bid Form
+                  div.col-md-6
+                    h5.mb-3 Your Bid
+                    form.bid-form
+                      div.mb-3
+                        label.form-label Available: 2,500,000 USDT
+                        div.input-group.mb-2
+                          span.input-group-text Bid Amount
+                          input.form-control.bg-dark.text-light#bid-amount(type="number" value="1300000" step="50000")
+                          span.input-group-text USDT
+                      
+                      div.mb-3
+                        div.form-check.form-switch
+                          input.form-check-input#auto-rebid(type="checkbox")
+                          label.form-check-label(for="auto-rebid") Auto-rebid up to maximum
+                        
+                        div.input-group.mb-2
+                          span.input-group-text Max Bid
+                          input.form-control.bg-dark.text-light#max-bid(type="number" placeholder="0")
+                          span.input-group-text USDT
+                      
+                      div.mb-3
+                        div.form-check.form-switch
+                          input.form-check-input#notification(type="checkbox" checked)
+                          label.form-check-label(for="notification") Notify me on outbid
+                      
+                      div.mb-3
+                        div.d-grid
+                          button.btn.btn-success#bid-button(type="submit") Place Bid
+                        div.form-text.text-center.mt-2 Your bid will be publicly visible but identity remains encrypted
+      
+      //- Auction List: right panel
+      div.col-lg-3
+        div.card.bg-dark.border-primary.shadow
+          div.card-header.bg-primary.text-white
+            h4.mb-0 Upcoming Auctions
+          div.card-body.p-0
+            div.input-group.p-2
+              span.input-group-text.bg-dark.border-secondary
+                i.bi.bi-search
+              input.form-control.bg-dark.text-light.border-secondary#auction-search(type="text" placeholder="Search...")
+            
+            ul.nav.nav-tabs.nav-fill
+              li.nav-item
+                a.nav-link.active.bg-dark.text-white(href="#") All
+              li.nav-item
+                a.nav-link.text-white(href="#") GEO
+              li.nav-item
+                a.nav-link.text-white(href="#") LEO/MEO
+            
+            div.auction-list-container(style="max-height: 900px; overflow-y: auto;")
+              table.table.table-dark.table-hover.mb-0
+                thead
+                  tr
+                    th Auction
+                    th Reserve
+                    th Starts
+                tbody
+                  tr
+                    td 
+                      div
+                        strong 90°E (GEO)
+                        div.small.text-muted Ka-Band (26-40 GHz)
+                    td 1.8M USDT
+                    td 2 days
+                  tr
+                    td 
+                      div
+                        strong 255°E (LEO)
+                        div.small.text-muted X-Band (8-12 GHz)
+                    td 950K USDT
+                    td 3 days
+                  tr
+                    td 
+                      div
+                        strong 110°E (GEO)
+                        div.small.text-muted L-Band (1-2 GHz)
+                    td 2.2M USDT
+                    td 4 days
+                  tr
+                    td 
+                      div
+                        strong 200°E (MEO)
+                        div.small.text-muted C-Band (4-8 GHz)
+                    td 1.1M USDT
+                    td 5 days
+                  tr
+                    td 
+                      div
+                        strong 45°E (GEO)
+                        div.small.text-muted Q/V-Band (40-75 GHz)
+                    td 1.6M USDT
+                    td 1 week
+        
+        //- Recently Completed
+        div.card.bg-dark.border-primary.shadow.mt-4
+          div.card-header.bg-primary.text-white
+            h4.mb-0 Recently Completed
+          div.card-body.p-0
+            div.completed-list-container(style="max-height: 300px; overflow-y: auto;")
+              table.table.table-dark.table-hover.mb-0
+                thead
+                  tr
+                    th License
+                    th Final Price
+                    th Winner
+                tbody
+                  tr
+                    td 
+                      div
+                        strong 180°E (GEO)
+                        div.small.text-muted Ku-Band (12-18 GHz)
+                    td 1.95M USDT
+                    td You
+                  tr
+                    td 
+                      div
+                        strong 310°E (GEO)
+                        div.small.text-muted Ka-Band (26-40 GHz)
+                    td 2.4M USDT
+                    td SatCorp
+                  tr
+                    td 
+                      div
+                        strong 30°E (LEO)
+                        div.small.text-muted X-Band (8-12 GHz)
+                    td 1.1M USDT
+                    td OrbitalNet
+                  tr
+                    td 
+                      div
+                        strong 150°E (MEO)
+                        div.small.text-muted C-Band (4-8 GHz)
+                    td 1.7M USDT
+                    td SpaceComm
+
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get references to DOM elements
+      const orbitalMapSvg = document.getElementById('orbital-map');
+      const timeElements = document.querySelectorAll('.auction-row .badge');
+      const progressBar = document.querySelector('.progress-bar');
+      const auctionRows = document.querySelectorAll('.auction-row');
+      const bidButton = document.getElementById('bid-button');
+      const bidAmount = document.getElementById('bid-amount');
+      const maxBid = document.getElementById('max-bid');
+      const autoRebid = document.getElementById('auto-rebid');
+      
+      // Add pulse animation to active auctions
+      function addPulseToActiveSlots() {
+        const activeCircles = orbitalMapSvg.querySelectorAll('circle[fill="#2563eb"]');
+        activeCircles.forEach(circle => {
+          const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+          animate.setAttribute('attributeName', 'r');
+          animate.setAttribute('from', '8');
+          animate.setAttribute('to', '12');
+          animate.setAttribute('dur', '1.5s');
+          animate.setAttribute('repeatCount', 'indefinite');
+          circle.appendChild(animate);
+        });
+      }
+      
+      // Start the pulse animations
+      addPulseToActiveSlots();
+      
+      // Countdown timers for auctions
+      function updateCountdowns() {
+        timeElements.forEach(el => {
+          // Get current time value
+          let timeText = el.textContent;
+          let hours = 0, minutes = 0, seconds = 0;
+          
+          if (timeText.includes('h')) {
+            const parts = timeText.split('h ');
+            hours = parseInt(parts[0]);
+            const minParts = parts[1].split('m');
+            minutes = parseInt(minParts[0]);
+          } else if (timeText.includes('m')) {
+            const parts = timeText.split('m ');
+            minutes = parseInt(parts[0]);
+            if (parts.length > 1) {
+              const secParts = parts[1].split('s');
+              seconds = parseInt(secParts[0]);
+            }
+          }
+          
+          // Decrease time by 1 second
+          seconds--;
+          if (seconds < 0) {
+            seconds = 59;
+            minutes--;
+            if (minutes < 0) {
+              minutes = 59;
+              hours--;
+            }
+          }
+          
+          // Format new time string
+          let newTimeText;
+          if (hours > 0) {
+            newTimeText = `${hours}h ${minutes}m`;
+            el.classList.remove('bg-danger');
+            el.classList.add('bg-warning');
+          } else if (minutes > 0) {
+            if (minutes <= 10) {
+              el.classList.remove('bg-warning');
+              el.classList.add('bg-danger');
+            }
+            newTimeText = `${minutes}m ${seconds}s`;
+          } else {
+            newTimeText = `${seconds}s`;
+            el.classList.remove('bg-warning');
+            el.classList.add('bg-danger');
+          }
+          
+          // Update display
+          el.textContent = newTimeText;
+        });
+      }
+      
+      // Update auction progress
+      function updateProgress() {
+        const currentProgress = parseInt(progressBar.getAttribute('aria-valuenow'));
+        if (currentProgress > 0) {
+          const newProgress = Math.max(0, currentProgress - 0.1);
+          progressBar.style.width = `${newProgress}%`;
+          progressBar.setAttribute('aria-valuenow', newProgress);
+        }
+      }
+      
+      // Simulate bid updates
+      function simulateBidUpdates() {
+        // Randomly select an auction to update
+        const randomIndex = Math.floor(Math.random() * auctionRows.length);
+        const row = auctionRows[randomIndex];
+        
+        // Get current bid
+        const bidCell = row.querySelector('td:nth-child(3)');
+        let currentBid = parseInt(bidCell.textContent.replace(/[^0-9]/g, ''));
+        
+        // Random bid increase
+        const increase = Math.floor(Math.random() * 5 + 1) * 50000;
+        currentBid += increase;
+        
+        // Update bid display with animation
+        bidCell.innerHTML = `<span class="text-success">${currentBid.toLocaleString()} USDT</span>`;
+        setTimeout(() => {
+          bidCell.innerHTML = `${currentBid.toLocaleString()} USDT`;
+        }, 1000);
+        
+        // Update bidder count
+        const bidderCell = row.querySelector('td:nth-child(4)');
+        const currentBidders = parseInt(bidderCell.textContent);
+        if (Math.random() > 0.7) {
+          bidderCell.textContent = currentBidders + 1;
+          bidderCell.classList.add('text-success');
+          setTimeout(() => {
+            bidderCell.classList.remove('text-success');
+          }, 1000);
+        }
+      }
+      
+      // Handle bid placement
+      if (bidButton) {
+        bidButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const amount = parseInt(bidAmount.value);
+          if (isNaN(amount) || amount <= 0) {
+            alert('Please enter a valid bid amount');
+            return;
+          }
+          
+          // Check if amount is greater than current bid
+          const currentBid = 1250000;
+          if (amount <= currentBid) {
+            alert(`Your bid must be greater than the current bid of ${currentBid.toLocaleString()} USDT`);
+            return;
+          }
+          
+          // In a real app, this would call the Unicity Platform API
+          alert(`Bid of ${amount.toLocaleString()} USDT placed successfully for 60°E GEO C-Band spectrum license.`);
+          
+          // Update the UI to reflect the new bid
+          const bidCell = document.querySelector('.auction-row.active td:nth-child(3)');
+          if (bidCell) {
+            bidCell.innerHTML = `<span class="text-success">${amount.toLocaleString()} USDT</span>`;
+            setTimeout(() => {
+              bidCell.innerHTML = `${amount.toLocaleString()} USDT`;
+            }, 1000);
+          }
+          
+          // Add or update entry in Your Active Bids
+          const activeBidsTable = document.querySelector('.card:nth-of-type(2) tbody');
+          if (activeBidsTable) {
+            const existingRow = activeBidsTable.querySelector('tr:first-child');
+            if (existingRow) {
+              existingRow.querySelector('td:nth-child(2)').textContent = `${amount.toLocaleString()} USDT`;
+            }
+          }
+        });
+      }
+      
+      // Toggle max bid input based on auto-rebid checkbox
+      if (autoRebid && maxBid) {
+        maxBid.parentElement.style.display = 'none';
+        
+        autoRebid.addEventListener('change', function() {
+          if (this.checked) {
+            maxBid.parentElement.style.display = 'flex';
+          } else {
+            maxBid.parentElement.style.display = 'none';
+          }
+        });
+      }
+      
+      // Orbit Type switcher
+      const orbitButtons = document.querySelectorAll('.card-header .btn-group-sm .btn');
+      orbitButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          orbitButtons.forEach(btn => {
+            btn.classList.remove('active', 'btn-primary');
+            btn.classList.add('btn-outline-primary');
+          });
+          
+          // Add active class to clicked button
+          this.classList.add('active', 'btn-primary');
+          this.classList.remove('btn-outline-primary');
+          
+          // Update orbital visualization based on selected type
+          const orbitType = this.textContent.trim();
+          updateOrbitalView(orbitType);
+        });
+      });
+      
+      // Update orbital visualization based on type
+      function updateOrbitalView(orbitType) {
+        // Get the SVG element
+        const svg = orbitalMapSvg;
+        
+        // Clear existing orbital rings
+        const existingOrbits = svg.querySelectorAll('circle[stroke="#333"]');
+        existingOrbits.forEach(orbit => orbit.remove());
+        
+        // Clear existing slot markings
+        const existingSlots = svg.querySelectorAll('circle[fill="#666"]');
+        existingSlots.forEach(slot => slot.remove());
+        
+        const existingLabels = svg.querySelectorAll('text[fill="#888"]');
+        existingLabels.forEach(label => label.remove());
+        
+        // Create new orbital rings based on type
+        if (orbitType === 'GEO') {
+          // Single geostationary orbit
+          const orbit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          orbit.setAttribute('cx', '250');
+          orbit.setAttribute('cy', '140');
+          orbit.setAttribute('r', '150');
+          orbit.setAttribute('fill', 'none');
+          orbit.setAttribute('stroke', '#333');
+          orbit.setAttribute('stroke-width', '1');
+          orbit.setAttribute('stroke-dasharray', '4,4');
+          svg.appendChild(orbit);
+          
+          // Add slots every 30 degrees
+          for (let i = 0; i < 12; i++) {
+            const angle = i * 30 * Math.PI / 180;
+            const x = 250 + 150 * Math.cos(angle);
+            const y = 140 + 150 * Math.sin(angle);
+            
+            // Slot marker
+            const slot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            slot.setAttribute('cx', x);
+            slot.setAttribute('cy', y);
+            slot.setAttribute('r', '3');
+            slot.setAttribute('fill', '#666');
+            svg.appendChild(slot);
+            
+            // Label
+            const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            label.setAttribute('x', x + 8);
+            label.setAttribute('y', y + 4);
+            label.setAttribute('fill', '#888');
+            label.setAttribute('font-size', '10px');
+            label.textContent = `${i*30}°E`;
+            svg.appendChild(label);
+          }
+        } else if (orbitType === 'MEO') {
+          // Medium earth orbit - two rings
+          for (let r of [100, 120]) {
+            const orbit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            orbit.setAttribute('cx', '250');
+            orbit.setAttribute('cy', '140');
+            orbit.setAttribute('r', r);
+            orbit.setAttribute('fill', 'none');
+            orbit.setAttribute('stroke', '#333');
+            orbit.setAttribute('stroke-width', '1');
+            orbit.setAttribute('stroke-dasharray', '4,4');
+            svg.appendChild(orbit);
+          }
+          
+          // Add slots at various angles on both rings
+          const meoSlots = [
+            {ring: 100, angle: 30}, {ring: 100, angle: 90}, {ring: 100, angle: 150}, 
+            {ring: 100, angle: 210}, {ring: 100, angle: 270}, {ring: 100, angle: 330},
+            {ring: 120, angle: 0}, {ring: 120, angle: 60}, {ring: 120, angle: 120}, 
+            {ring: 120, angle: 180}, {ring: 120, angle: 240}, {ring: 120, angle: 300}
+          ];
+          
+          meoSlots.forEach(slotInfo => {
+            const angle = slotInfo.angle * Math.PI / 180;
+            const x = 250 + slotInfo.ring * Math.cos(angle);
+            const y = 140 + slotInfo.ring * Math.sin(angle);
+            
+            // Slot marker
+            const slot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            slot.setAttribute('cx', x);
+            slot.setAttribute('cy', y);
+            slot.setAttribute('r', '3');
+            slot.setAttribute('fill', '#666');
+            svg.appendChild(slot);
+            
+            // Label
+            const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            label.setAttribute('x', x + 8);
+            label.setAttribute('y', y + 4);
+            label.setAttribute('fill', '#888');
+            label.setAttribute('font-size', '10px');
+            label.textContent = `${slotInfo.angle}°E`;
+            svg.appendChild(label);
+          });
+        } else if (orbitType === 'LEO') {
+          // Low earth orbit - three rings
+          for (let r of [70, 80, 90]) {
+            const orbit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            orbit.setAttribute('cx', '250');
+            orbit.setAttribute('cy', '140');
+            orbit.setAttribute('r', r);
+            orbit.setAttribute('fill', 'none');
+            orbit.setAttribute('stroke', '#333');
+            orbit.setAttribute('stroke-width', '1');
+            orbit.setAttribute('stroke-dasharray', '4,4');
+            svg.appendChild(orbit);
+          }
+          
+          // Add slots at various angles on all three rings
+          const leoSlots = [
+            {ring: 70, angle: 0}, {ring: 70, angle: 72}, {ring: 70, angle: 144}, 
+            {ring: 70, angle: 216}, {ring: 70, angle: 288},
+            {ring: 80, angle: 36}, {ring: 80, angle: 108}, {ring: 80, angle: 180}, 
+            {ring: 80, angle: 252}, {ring: 80, angle: 324},
+            {ring: 90, angle: 18}, {ring: 90, angle: 90}, {ring: 90, angle: 162}, 
+            {ring: 90, angle: 234}, {ring: 90, angle: 306}
+          ];
+          
+          leoSlots.forEach(slotInfo => {
+            const angle = slotInfo.angle * Math.PI / 180;
+            const x = 250 + slotInfo.ring * Math.cos(angle);
+            const y = 140 + slotInfo.ring * Math.sin(angle);
+            
+            // Slot marker
+            const slot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            slot.setAttribute('cx', x);
+            slot.setAttribute('cy', y);
+            slot.setAttribute('r', '2');
+            slot.setAttribute('fill', '#666');
+            svg.appendChild(slot);
+            
+            // Label for selected slots only (to avoid overcrowding)
+            if (slotInfo.angle % 72 === 0) {
+              const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+              label.setAttribute('x', x + 6);
+              label.setAttribute('y', y + 3);
+              label.setAttribute('fill', '#888');
+              label.setAttribute('font-size', '8px');
+              label.textContent = `${slotInfo.angle}°`;
+              svg.appendChild(label);
+            }
+          });
+        } else if (orbitType === 'Global') {
+          // Global view - show all orbits
+          for (let r of [70, 80, 90, 100, 120, 150]) {
+            const orbit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            orbit.setAttribute('cx', '250');
+            orbit.setAttribute('cy', '140');
+            orbit.setAttribute('r', r);
+            orbit.setAttribute('fill', 'none');
+            orbit.setAttribute('stroke', '#333');
+            orbit.setAttribute('stroke-width', '1');
+            orbit.setAttribute('stroke-dasharray', '4,4');
+            svg.appendChild(orbit);
+          }
+          
+          // Add fewer labels to avoid overcrowding
+          const globalSlots = [
+            {ring: 70, angle: 0}, {ring: 70, angle: 180},
+            {ring: 90, angle: 90}, {ring: 90, angle: 270},
+            {ring: 120, angle: 45}, {ring: 120, angle: 135}, 
+            {ring: 120, angle: 225}, {ring: 120, angle: 315},
+            {ring: 150, angle: 0}, {ring: 150, angle: 60}, 
+            {ring: 150, angle: 120}, {ring: 150, angle: 180},
+            {ring: 150, angle: 240}, {ring: 150, angle: 300}
+          ];
+          
+          globalSlots.forEach(slotInfo => {
+            const angle = slotInfo.angle * Math.PI / 180;
+            const x = 250 + slotInfo.ring * Math.cos(angle);
+            const y = 140 + slotInfo.ring * Math.sin(angle);
+            
+            // Slot marker
+            const slot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            slot.setAttribute('cx', x);
+            slot.setAttribute('cy', y);
+            slot.setAttribute('r', '3');
+            slot.setAttribute('fill', '#666');
+            svg.appendChild(slot);
+            
+            // Labels for GEO slots only
+            if (slotInfo.ring === 150) {
+              const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+              label.setAttribute('x', x + 8);
+              label.setAttribute('y', y + 4);
+              label.setAttribute('fill', '#888');
+              label.setAttribute('font-size', '10px');
+              label.textContent = `${slotInfo.angle}°E`;
+              svg.appendChild(label);
+            }
+          });
+        }
+        
+        // Add back active auction highlights
+        const activeSlots = [
+          {angle: 60, status: 'active'}, 
+          {angle: 105, status: 'pending'}, 
+          {angle: 180, status: 'completed'}, 
+          {angle: 270, status: 'active'}
+        ];
+        
+        activeSlots.forEach(slot => {
+          const angle = slot.angle * Math.PI / 180;
+          let radius = 150; // Default to GEO
+          
+          if (orbitType === 'MEO' && slot.angle === 105) {
+            radius = 120;
+          } else if (orbitType === 'LEO' && slot.angle === 270) {
+            radius = 90;
+          } else if (orbitType === 'Global') {
+            if (slot.angle === 60) radius = 150;
+            else if (slot.angle === 105) radius = 120;
+            else if (slot.angle === 180) radius = 150;
+            else if (slot.angle === 270) radius = 150;
+          }
+          
+          const x = 250 + radius * Math.cos(angle);
+          const y = 140 + radius * Math.sin(angle);
+          const color = slot.status === 'active' ? "#2563eb" : (slot.status === 'pending' ? "#f59e0b" : "#10b981");
+          
+          // Highlight circle
+          const highlight = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          highlight.setAttribute('cx', x);
+          highlight.setAttribute('cy', y);
+          highlight.setAttribute('r', '8');
+          highlight.setAttribute('fill', color);
+          svg.appendChild(highlight);
+          
+          // Pulsing effect for active auctions
+          if (slot.status === 'active') {
+            const pulse = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            pulse.setAttribute('cx', x);
+            pulse.setAttribute('cy', y);
+            pulse.setAttribute('r', '12');
+            pulse.setAttribute('fill', 'none');
+            pulse.setAttribute('stroke', color);
+            pulse.setAttribute('stroke-width', '2');
+            svg.appendChild(pulse);
+            
+            const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+            animate.setAttribute('attributeName', 'r');
+            animate.setAttribute('from', '8');
+            animate.setAttribute('to', '14');
+            animate.setAttribute('dur', '2s');
+            animate.setAttribute('repeatCount', 'indefinite');
+            highlight.appendChild(animate);
+          }
+        });
+      }
+      
+      // Start interval timers
+      setInterval(updateCountdowns, 1000);
+      setInterval(updateProgress, 2000);
+      setInterval(simulateBidUpdates, 5000);
+    });
